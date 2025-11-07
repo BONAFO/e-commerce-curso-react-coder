@@ -4,39 +4,41 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import HomeIcon from '@mui/icons-material/Home';
 import { Autocomplete, TextField } from '@mui/material';
-import EmailIcon from '@mui/icons-material/Email';
 import CartWidget from './CartWidget';
 import Logo from './Logo';
-
+import products from "../db/products.json"
 
 //Seach Bar
 function InputSeach() {
-  const [valor, setValor] = useState('');
+  const [search, setSearch] = useState('');
+  const MAX_VISIBLE_ITEMS = 5; // ← Cambiá esto para ajustar el alto del dropdown
 
-  const baseDatos = [
-    { name: 'Call of Duty 2', alias: 'cod' },
-    { name: 'Battlefield 3', alias: 'b3' },
-    { name: 'Battlefield 4', alias: 'b4' },
-    { name: 'Need For Speed Carbon', alias: 'nfs' },
-  ];
+  const db = products;
 
-  // Filtra por name o alias
-  const opcionesFiltradas = baseDatos.filter((item) =>
-    item.name.toLowerCase().includes(valor.toLowerCase()) ||
-    item.alias.toLowerCase().includes(valor.toLowerCase())
+  const response = db.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    item.alias.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <Autocomplete
       freeSolo
-      options={opcionesFiltradas.map(op => op.name)}
-      inputValue={valor}
+      options={response.map(op => op.name)}
+      inputValue={search}
       onInputChange={(event, newInputValue) => {
-        setValor(newInputValue);
+        setSearch(newInputValue);
       }}
+      open={search.length > 0}
       sx={{ width: '50%' }}
+      slotProps={{
+        listbox: {
+          style: {
+            maxHeight: `${MAX_VISIBLE_ITEMS * 40}px`, // ← altura estimada por ítem
+            overflowY: 'auto',
+          },
+        },
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -101,10 +103,7 @@ export default function NavBar({ pages }) {
 
 
 
-  pages = [
-    { txt: 'inicio', icon: <HomeIcon />, action: () => alert("me fui a inicio") },
-    { txt: 'contacto', icon: <EmailIcon />, action: () => alert("me fui a contacto") },
-  ];
+
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -128,8 +127,10 @@ export default function NavBar({ pages }) {
       {showStickySearch && (
         <Box
           sx={{
-            position: 'sticky',
+            position: 'fixed',
             top: 0,
+            left: { xs: 50, sm: 240 }, // ← 0 en mobile, 240 en desktop
+            width: { xs: '100%', sm: 'calc(40% - 240px)' },
             zIndex: 1000,
             backgroundColor: 'var(--bs-body-color)',
             px: 2,
@@ -139,6 +140,7 @@ export default function NavBar({ pages }) {
         >
           <InputSeach />
         </Box>
+
       )}
     </ThemeProvider>
   );

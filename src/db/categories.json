@@ -1,0 +1,8 @@
+[
+    { "id": 1, "name": "Acción" },
+    { "id": 2, "name": "Aventura" },
+    { "id": 3, "name": "Estrategia" },
+    { "id": 4, "name": "Simulación" },
+    { "id": 5, "name": "Terror" },
+    { "id": 6, "name": "Indie" }
+]
