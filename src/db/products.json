@@ -1,0 +1,9 @@
+[
+    { "name": "Call of Duty 2", "alias": "cod" },
+    { "name": "Battlefield 3", "alias": "b3" },
+    { "name": "Battlefield 4", "alias": "b4" },
+    { "name": "Need For Speed Carbon", "alias": "nfs" },
+    { "name": "Half-Life 2", "alias": "hl2" },
+    { "name": "Portal 2", "alias": "p2" },
+    { "name": "Left 4 Dead 2", "alias": "l4d2" }
+]

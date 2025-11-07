@@ -30,6 +30,9 @@ export default function CartWidget() {
     setCarrito((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const goToPay=()=>{
+    alert("Nos vamos a pagar la prata!")
+  }
   return (
     <>
 
@@ -67,13 +70,14 @@ export default function CartWidget() {
                   Eliminar
                 </Button>
               </ListItem>
+
             </MenuItem>
           ))
         )}
+        <Button color="info" sx={{ textAlign: "center", width: "100%" }} size="small" onClick={goToPay}>
+          Pagar
+        </Button>
       </Menu>
     </>
   );
 }
-
-
-// CartWidget
