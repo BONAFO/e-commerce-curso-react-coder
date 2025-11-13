@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,24 +7,30 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Autocomplete, TextField } from '@mui/material';
 import CartWidget from './CartWidget';
 import Logo from './Logo';
-import products from "../db/products.json"
+import { FilterProductByName } from '../db/products.manage';
 
 //Seach Bar
 function InputSeach() {
   const [search, setSearch] = useState('');
+  const [response, setResponse ] = useState([]);
+
   const MAX_VISIBLE_ITEMS = 5; // ← Cambiá esto para ajustar el alto del dropdown
 
-  const db = products;
 
-  const response = db.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase()) ||
-    item.alias.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+  //     const response = db.filter((item) =>
+  //   item.name.toLowerCase().includes(search.toLowerCase())
+  // );
+
+  FilterProductByName(search).then(resp => {
+    setResponse([...resp.data])
+  }).catch(err => {console.log(err)  })
+  }, [search]);
 
   return (
     <Autocomplete
       freeSolo
-      options={response.map(op => op.name)}
+      options={response.map(op => op.name)} //opciones
       inputValue={search}
       onInputChange={(event, newInputValue) => {
         setSearch(newInputValue);

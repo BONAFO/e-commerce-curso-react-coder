@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Box,
     List,
@@ -14,6 +14,8 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 import categories from "../db/categories.json"
+import { GetProducts } from "../db/products.manage";
+import ProductCard from "./ProductCard";
 
 
 
@@ -73,10 +75,46 @@ function SidebarFilter() {
 export default function ItemListContainer({ waitMsj }) {
     const [products, setProducts] = useState([]);
 
+
+    useEffect(() => {
+        GetProducts().then(response => setProducts(response.data)).catch(err => waitMsj = err.error)
+    }, []);
+
+
     return (
         <>
             {products.length > 0
-                ? ("")
+                ? (
+                    <>
+                        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+                            <Box
+                                sx={{
+                                    flexShrink: 0,
+                                    transition: 'width 0.3s ease',
+                                }}
+                            >
+                                <SidebarFilter />
+                            </Box>
+
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                    p: 3,
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: 2,
+                                    alignItems: 'flex-start',
+                                    minWidth: 0,
+                                }}
+                            >
+                                {products.map(game => (
+                                    <ProductCard  game={game} />
+                                ))}
+                            </Box>
+                        </Box>
+
+                    </>
+                )
                 : (
 
                     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
