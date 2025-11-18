@@ -12,19 +12,21 @@ import { FilterProductByName } from '../db/products.manage';
 //Seach Bar
 function InputSeach() {
   const [search, setSearch] = useState('');
-  const [response, setResponse ] = useState([]);
+  const [response, setResponse] = useState([]);
 
   const MAX_VISIBLE_ITEMS = 5; // ← Cambiá esto para ajustar el alto del dropdown
-
+  let searchint = "";
 
   useEffect(() => {
-  //     const response = db.filter((item) =>
-  //   item.name.toLowerCase().includes(search.toLowerCase())
-  // );
+    //     const response = db.filter((item) =>
+    //   item.name.toLowerCase().includes(search.toLowerCase())
+    // );
 
-  FilterProductByName(search).then(resp => {
-    setResponse([...resp.data])
-  }).catch(err => {console.log(err)  })
+    FilterProductByName(search).then(resp => {
+      setResponse([...resp.data])
+    }).catch(err => { console.log(err) })
+
+
   }, [search]);
 
   return (
@@ -33,6 +35,7 @@ function InputSeach() {
       options={response.map(op => op.name)} //opciones
       inputValue={search}
       onInputChange={(event, newInputValue) => {
+        setResponse([])
         setSearch(newInputValue);
       }}
       open={search.length > 0}
