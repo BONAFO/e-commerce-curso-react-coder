@@ -43,3 +43,26 @@ export const FilterProductByName = (name) => {
         }
     })
 }
+
+export const FilterProductByID = (id) => {
+    return new Promise((resolve, reject) => {
+        if (products.length > 0) {
+            setTimeout(() => {
+                resolve({
+                    status: 200,
+                    data: products.filter((item) =>
+                        item.id == id
+                    )
+                })
+            }, 3000);
+        } else {
+            setTimeout(() => {
+                reject({
+                    status: 500,
+                    error: "Internal Error"
+                })
+            }, 3000);
+
+        }
+    })
+}

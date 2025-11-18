@@ -16,6 +16,8 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import categories from "../db/categories.json"
 import { GetProducts } from "../db/products.manage";
 import ProductCard from "./ProductCard";
+import { useMsjs } from "../context/LoadingMsjContext";
+import WaitingMsj from "./WaitingMsj";
 
 
 
@@ -72,9 +74,9 @@ function SidebarFilter() {
 }
 
 
-export default function ItemListContainer({ waitMsj }) {
+export default function ItemListContainer({  }) {
     const [products, setProducts] = useState([]);
-
+    let waitMsj = (useMsjs()).loading;
 
     useEffect(() => {
         GetProducts().then(response => setProducts(response.data)).catch(err => waitMsj = err.error)
@@ -128,12 +130,13 @@ export default function ItemListContainer({ waitMsj }) {
                                 justifyContent: 'flex-start',
                             }}
                         >
-                            <Typography
+                            {/* <Typography
                                 color="var(--bs-font-color)"
                                 sx={{ fontSize: '20px', mb: 2 }}
                             >
                                 {waitMsj}
-                            </Typography>
+                            </Typography> */}
+                            <WaitingMsj waitMsj={waitMsj}/>
                         </Box>
                     </Box>
 
