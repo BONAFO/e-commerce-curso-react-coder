@@ -24,8 +24,8 @@ export default function App() {
             <ScreenProvider>
                 <MsjsProvider>
                     <NavBar pages={pages} />
-                    {/* <MainPage /> */}
-                    <ProductPage />
+                    <MainPage />
+                    {/* <ProductPage /> */}
                 </MsjsProvider>
             </ScreenProvider>
 

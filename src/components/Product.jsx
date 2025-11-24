@@ -1,6 +1,5 @@
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 export function ProductMobile({ product }) {
-  console.log(product);
   product.desc =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam soluta voluptatibus molestiae praesentium deleniti molestias earum rem vitae quidem non, error consequuntur ex dolore facilis eius magnam officiis corrupti.";
   return (
@@ -73,7 +72,7 @@ export function ProductMobile({ product }) {
                   },
                 }}
               >
-                <Typography variant="h5">IR al Carrito</Typography>
+                <Typography variant="h5">Pagar</Typography>
               </Button>
             </Box>
           </Box>
@@ -84,7 +83,7 @@ export function ProductMobile({ product }) {
 }
 
 export function ProductDesk({ product }) {
-  console.log(product);
+
   product.desc =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam soluta voluptatibus molestiae praesentium deleniti molestias earum rem vitae quidem non, error consequuntur ex dolore facilis eius magnam officiis corrupti.";
   return (
@@ -153,7 +152,7 @@ export function ProductDesk({ product }) {
                     },
                   }}
                 >
-                  <Typography variant="h5">IR al Carrito</Typography>
+                  <Typography variant="h5">Pagar</Typography>
                 </Button>
               </Box>
             </Box>
