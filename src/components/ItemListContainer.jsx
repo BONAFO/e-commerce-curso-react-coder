@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Box,
     List,
@@ -14,10 +14,9 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 import categories from "../db/categories.json"
-import { GetProducts } from "../db/products.manage";
 import ProductCard from "./ProductCard";
-import { useMsjs } from "../context/LoadingMsjContext";
 import WaitingMsj from "./WaitingMsj";
+import { useProducts } from "../hooks/Products";
 
 
 
@@ -75,17 +74,11 @@ function SidebarFilter() {
 
 
 export default function ItemListContainer({  }) {
-    const [products, setProducts] = useState([]);
-    let waitMsj = (useMsjs()).loading;
-
-    useEffect(() => {
-        GetProducts().then(response => setProducts(response.data)).catch(err => waitMsj = err.error)
-    }, []);
-
+    const {products, waitMsj} = useProducts({});
 
     return (
         <>
-            {products.length > 0
+            {Array.isArray(products)
                 ? (
                     <>
                         <Box sx={{ display: 'flex', minHeight: '100vh' }}>
