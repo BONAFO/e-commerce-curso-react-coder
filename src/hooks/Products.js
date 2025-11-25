@@ -88,3 +88,32 @@ export const useProductsByID = ({ isDepend = false, id }) => {
     setMsj,
   };
 };
+export const useProductsByCategorie = ({ isDepend = false, catID }) => {
+  const [products, setProducts] = useState(null);
+  const [waitMsj, setMsj] = useState(useMsjs().loading);
+
+  const handleError = (response) => {    
+    throw Error(errorDict[response.status]);
+  };
+  const handleSuccess = (response) => {
+    setProducts([...response.data]);
+  };
+
+  const dbCall = () => {
+    axios
+      .get(dbRoutes[(catID == -1 ) ? ("getProducts") : ("getProductsbycatID")], {}, { categorie : catID })
+      .then((resp) => handleSuccess(resp))
+      .catch((err) => handleError(err));
+  };
+
+  useEffect(dbCall, [
+    typeof isDepend == "boolean" ? (isDepend ? product : isDepend) : isDepend,
+  ]);
+
+  return {
+    setProducts,
+    products,
+    waitMsj,
+    setMsj,
+  };
+};

@@ -1,5 +1,17 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useCart } from "../context/CartContext";
+
 export function ProductMobile({ product }) {
+  const { cart, setCart } = useCart();
+
+  const handleAddToCart = () => {
+    setCart([...cart, product]);
+  };
+
+  const handlePay = () => {
+    alert("nos vamo a pagar");
+  };
+
   product.desc =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam soluta voluptatibus molestiae praesentium deleniti molestias earum rem vitae quidem non, error consequuntur ex dolore facilis eius magnam officiis corrupti.";
   return (
@@ -49,21 +61,27 @@ export function ProductMobile({ product }) {
               ${product.price}
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-              <Button
-                aria-label="carrito"
-                sx={{
-                  color: "white",
-                  backgroundColor: "transparent",
-                  "&:hover": {
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                  },
-                }}
-              >
-                <Typography variant="h5">Añadir al Carrito</Typography>
-              </Button>
+              {cart.filter((g) => g.id == product.id).length == 0 ? (
+                <Button
+                  aria-label="carrito"
+                  onClick={handleAddToCart}
+                  sx={{
+                    color: "white",
+                    backgroundColor: "transparent",
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,0.1)",
+                    },
+                  }}
+                >
+                  <Typography variant="h5">Añadir al Carrito</Typography>
+                </Button>
+              ) : (
+                ""
+              )}
 
               <Button
                 aria-label="carrito"
+                onClick={handlePay}
                 sx={{
                   color: "white",
                   backgroundColor: "transparent",
@@ -83,6 +101,15 @@ export function ProductMobile({ product }) {
 }
 
 export function ProductDesk({ product }) {
+  const { cart, setCart } = useCart();
+
+  const handleAddToCart = () => {
+    setCart([...cart, product]);
+  };
+
+  const handlePay = () => {
+    alert("nos vamo a pagar");
+  };
 
   product.desc =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam soluta voluptatibus molestiae praesentium deleniti molestias earum rem vitae quidem non, error consequuntur ex dolore facilis eius magnam officiis corrupti.";
@@ -129,21 +156,27 @@ export function ProductDesk({ product }) {
                 ${product.price}
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-                <Button
-                  aria-label="carrito"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "transparent",
-                    "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.1)",
-                    },
-                  }}
-                >
-                  <Typography variant="h5">Añadir al Carrito</Typography>
-                </Button>
+                {cart.filter((g) => g.id == product.id).length == 0 ? (
+                  <Button
+                    aria-label="carrito"
+                    onClick={handleAddToCart}
+                    sx={{
+                      color: "white",
+                      backgroundColor: "transparent",
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,0.1)",
+                      },
+                    }}
+                  >
+                    <Typography variant="h5">Añadir al Carrito</Typography>
+                  </Button>
+                ) : (
+                  ""
+                )}
 
                 <Button
                   aria-label="carrito"
+                  onClick={handlePay}
                   sx={{
                     color: "white",
                     backgroundColor: "transparent",
@@ -162,4 +195,3 @@ export function ProductDesk({ product }) {
     </>
   );
 }
-
