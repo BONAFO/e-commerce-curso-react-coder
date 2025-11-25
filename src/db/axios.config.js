@@ -12,6 +12,7 @@ export const dbRoutes = {
   getProducts: "/get-products/",
   getProductsbyName: "/get-products/name/",
   getProductsbyID: "/get-products/id/",
+    getProductsbycatID: "/get-products/categorie/",
 };
 
 // SIMULANDO AXIOS
@@ -54,6 +55,21 @@ export const axios = {
             resp = {
               status: 200,
               data: products.filter((item) => item.id == head.id),
+            };
+
+            if (resp.status == 200) {
+              resolve(resp);
+            } else {
+              reject(resp);
+            }
+            break;
+
+
+
+          case dbRoutes["getProductsbycatID"]:
+            resp = {
+              status: 200,
+              data: products.filter((item) => item.categorie == head.categorie),
             };
 
             if (resp.status == 200) {

@@ -5,18 +5,29 @@ import {
   Typography,
   Button,
   Box,
-} from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ game }) {
+  const { cart, setCart } = useCart();
+
+  const handleAddToCart = () => {
+    setCart([...cart, game]);
+  };
+
+  const handlePay = () => {
+    alert("nos vamo a pagar")
+  };
+
   return (
     <Card
       sx={{
         width: 300,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        userSelect: 'none',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        userSelect: "none",
       }}
     >
       <CardMedia
@@ -36,21 +47,27 @@ export default function ProductCard({ game }) {
 
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
+          display: "flex",
+          justifyContent: "space-between",
           gap: 1,
           p: 2,
           pt: 0,
         }}
       >
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<ShoppingCartIcon />}
-          sx={{ flex: 1 }}
-        >
+        {cart.filter((g) => g.id == game.id).length == 0 ? (
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleAddToCart}
+            startIcon={<ShoppingCartIcon />}
+            sx={{ flex: 1 }}
+          ></Button>
+        ) : (
+          <Button variant="contained" onClick={handlePay} color="success" fullWidth sx={{ flex: 1 }}>
+            PAGAR
+          </Button>
+        )}
 
-        </Button>
         <Button variant="outlined" fullWidth sx={{ flex: 1 }}>
           Ver
         </Button>

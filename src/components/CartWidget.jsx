@@ -10,13 +10,15 @@ import {
   Box
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useCart } from '../context/CartContext';
 
 export default function CartWidget() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [carrito, setCarrito] = useState([
-    { nombre: 'Producto A', precio: 120 },
-    { nombre: 'Producto B', precio: 80 },
-  ]);
+  // const [cart, setCart] = useState([
+
+  // ]);
+
+  const { cart, setCart} = useCart();
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +29,7 @@ export default function CartWidget() {
   };
 
   const eliminarProducto = (index) => {
-    setCarrito((prev) => prev.filter((_, i) => i !== index));
+    setCart((prev) => prev.filter((_, i) => i !== index));
   };
 
   const goToPay=()=>{
@@ -38,7 +40,7 @@ export default function CartWidget() {
 
 
       <IconButton onClick={handleOpen} sx={{ p: 0 }}>
-        <Badge badgeContent={carrito.length} color="error">
+        <Badge badgeContent={cart.length} color="error">
           <Box sx={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ShoppingCartIcon sx={{ fontSize: 28 }} />
           </Box>
@@ -54,12 +56,12 @@ export default function CartWidget() {
 
 
 
-        {carrito.length === 0 ? (
+        {cart.length === 0 ? (
           <MenuItem disabled>
-            <ListItemText primary="El carrito está vacío" />
+            <ListItemText primary="El cart está vacío" />
           </MenuItem>
         ) : (
-          carrito.map((item, index) => (
+          cart.map((item, index) => (
             <MenuItem key={index}>
               <ListItem disableGutters sx={{ width: '100%' }}>
                 <ListItemText
