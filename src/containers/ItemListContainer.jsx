@@ -14,23 +14,24 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 
 import categories from "../db/categories.json";
-import ProductCard from "./ProductCard";
-import WaitingMsj from "./WaitingMsj";
+import ProductCard from "../components/ProductCard";
+import WaitingMsj from "../components/WaitingMsj";
 import { useProductMain } from "../context/ProductsMainContext";
+import { useMsjs } from "../context/LoadingMsjContext";
+import Spinner from "../components/Spinner";
 
 function SidebarFilter() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [collapsed, setCollapsed] = useState(isMobile); // collapsed by default on mobile
-  const { setCategorie , setProducts} = useProductMain();
+  const { setCategorie, setProducts, categorieSelected } = useProductMain();
 
   const toggleSidebar = () => {
     setCollapsed((prev) => !prev);
   };
 
-  
   const handleFilter = (catID) => {
-    setProducts(null)
-    setCategorie(catID)
+    setProducts(null);
+    setCategorie(catID);
   };
 
   return (
@@ -54,7 +55,8 @@ function SidebarFilter() {
           sx={{ flexGrow: 1, display: collapsed ? "none" : "block" }}
         >
           Categorias
-        </Typography>setProducts
+        </Typography>
+
         <IconButton onClick={toggleSidebar} sx={{ color: "#fff" }}>
           {collapsed ? (
             <KeyboardDoubleArrowRightIcon />
@@ -71,13 +73,18 @@ function SidebarFilter() {
           <ListItemButton
             key={cat.id}
             onClick={() => {
-              handleFilter(cat.id);
+              if (categorieSelected != cat.id) {
+                handleFilter(cat.id);
+              }
             }}
             sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
           >
             <ListItemText
               primary={cat.name}
-              sx={{ display: collapsed ? "none" : "block" }}
+              sx={{
+                display: collapsed ? "none" : "block",
+                color: categorieSelected == cat.id ? "#a5e7ffff" : "#ffffff",
+              }}
             />
           </ListItemButton>
         ))}
@@ -87,10 +94,11 @@ function SidebarFilter() {
 }
 
 export default function ItemListContainer({}) {
-  const {products, waitMsj} = useProductMain();
-
+  const { products,  spinner } = useProductMain();
+  const { no_games } = useMsjs();
   return (
     <>
+      <Spinner loading={spinner} />
       {Array.isArray(products) ? (
         <>
           <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -103,38 +111,40 @@ export default function ItemListContainer({}) {
               <SidebarFilter />
             </Box>
 
-            <Box
-              sx={{
-                flexGrow: 1,
-                p: 3,
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 2,
-                alignItems: "flex-start",
-                minWidth: 0,
-              }}
-            >
-              {products.map((game) => (
-                <ProductCard game={game} />
-              ))}
-            </Box>
+            {products.length > 0 ? (
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  p: 3,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 2,
+                  alignItems: "flex-start",
+                  minWidth: 0,
+                }}
+              >
+                {products.map((game) => (
+                  <ProductCard key={game.id} game={game} />
+                ))}
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  p: 3,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <WaitingMsj waitMsj={no_games} />
+              </Box>
+            )}
           </Box>
         </>
       ) : (
-        <Box sx={{ display: "flex", minHeight: "100vh" }}>
-          <SidebarFilter/>
-          <Box
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-            }}
-          >
-            <WaitingMsj waitMsj={waitMsj} />
-          </Box>
-        </Box>
+        ""
+    
       )}
     </>
   );

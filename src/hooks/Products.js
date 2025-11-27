@@ -21,7 +21,11 @@ export const useProducts = ({ isDepend = false }) => {
   };
 
   useEffect(dbCall, [
-    typeof isDepend == "boolean" ? (isDepend ? products : isDepend) : isDepend,
+    typeof isDepend == "boolean"
+      ? isDepend === false
+        ? products
+        : isDepend
+      : isDepend,
   ]);
 
   return {
@@ -50,7 +54,11 @@ export const useProductsByName = ({ isDepend = false, name }) => {
   };
 
   useEffect(dbCall, [
-    typeof isDepend == "boolean" ? (isDepend ? products : isDepend) : isDepend,
+    typeof isDepend == "boolean"
+      ? isDepend === false
+        ? products
+        : isDepend
+      : isDepend,
   ]);
 
   return {
@@ -61,13 +69,15 @@ export const useProductsByName = ({ isDepend = false, name }) => {
 
 export const useProductsByID = ({ isDepend = false, id }) => {
   const [product, setProduct] = useState(null);
-  const [waitMsj, setMsj] = useState(useMsjs().loading_one);
+  const [spinner, setSpinner] = useState(true);
 
   const handleError = (response) => {
+    setSpinner(false);
     throw Error(errorDict[response.status]);
   };
   const handleSuccess = (response) => {
     setProduct([...response.data]);
+    setSpinner(false);
   };
 
   const dbCall = () => {
@@ -77,43 +87,64 @@ export const useProductsByID = ({ isDepend = false, id }) => {
       .catch((err) => handleError(err));
   };
 
-  useEffect(dbCall, [
-    typeof isDepend == "boolean" ? (isDepend ? product : isDepend) : isDepend,
+  useEffect(() => {
+    setSpinner(true);
+    dbCall();
+  }, [
+    typeof isDepend == "boolean"
+      ? isDepend === false
+        ? product
+        : isDepend
+      : isDepend,
   ]);
 
   return {
     setProduct,
     product,
-    waitMsj,
-    setMsj,
+    spinner,
+    setSpinner,
   };
 };
 export const useProductsByCategorie = ({ isDepend = false, catID }) => {
   const [products, setProducts] = useState(null);
-  const [waitMsj, setMsj] = useState(useMsjs().loading);
+  const [spinner, setSpinner] = useState(true);
 
-  const handleError = (response) => {    
+  const handleError = (response) => {
+    setSpinner(false);
     throw Error(errorDict[response.status]);
   };
   const handleSuccess = (response) => {
+    setSpinner(false);
     setProducts([...response.data]);
   };
 
   const dbCall = () => {
     axios
-      .get(dbRoutes[(catID == -1 ) ? ("getProducts") : ("getProductsbycatID")], {}, { categorie : catID })
+      .get(
+        dbRoutes[catID == -1 ? "getProducts" : "getProductsbycatID"],
+        {},
+        { categorie: catID }
+      )
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
   };
 
-  useEffect(dbCall, [
-    typeof isDepend == "boolean" ? (isDepend ? product : isDepend) : isDepend,
+
+  useEffect(() => {
+    setSpinner(true);
+    dbCall();
+  }, [
+    typeof isDepend == "boolean"
+      ? isDepend === false
+        ? product
+        : isDepend
+      : isDepend,
   ]);
 
   return {
     setProducts,
     products,
-    waitMsj,
-    setMsj,
+    spinner,
+    setSpinner,
   };
 };
