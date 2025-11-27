@@ -1,4 +1,4 @@
-import ItemListContainer from "../components/ItemListContainer";
+import ItemListContainer from "../containers/ItemListContainer";
 import ProductMainProvider from "../context/ProductsMainContext";
 
 export default function MainPage() {

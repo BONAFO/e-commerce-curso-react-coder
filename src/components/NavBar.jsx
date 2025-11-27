@@ -1,80 +1,104 @@
-import { useState, useEffect, useRef } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Autocomplete, TextField } from '@mui/material';
-import CartWidget from './CartWidget';
-import Logo from './Logo';
-import { useProductsByName } from '../hooks/Products';
+import { useState, useEffect, useRef } from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import HomeIcon from "@mui/icons-material/Home";
+import EmailIcon from "@mui/icons-material/Email";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Autocomplete, TextField } from "@mui/material";
+import CartWidget from "./CartWidget";
+import Logo from "./Logo";
+import { useProductsByName } from "../hooks/Products";
+import { NavLink } from "react-router";
 
 function InputSeach() {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const MAX_VISIBLE_ITEMS = 5; // ← Cambiá esto para ajustar el alto del dropdown
 
-  const {products} = useProductsByName({isDepend: search, name: search});
-
+  const { products } = useProductsByName({ isDepend: search, name: search });
   return (
     <Autocomplete
       freeSolo
-      options={Array.isArray(products) ? products.map(op => op.name) : []} //opciones
+      options={Array.isArray(products) ? products : []}
+      getOptionLabel={(option) => option.name ?? ""}
       inputValue={search}
+      onChange={() => {
+        console.log(123);
+      }}
       onInputChange={(event, newInputValue) => {
         setSearch(newInputValue);
       }}
       open={search.length > 0}
-      sx={{ width: '50%' }}
+      sx={{ width: "50%" }}
       slotProps={{
         listbox: {
           style: {
-            maxHeight: `${MAX_VISIBLE_ITEMS * 40}px`, // ← altura estimada por ítem
-            overflowY: 'auto',
+            maxHeight: `${MAX_VISIBLE_ITEMS * 40}px`,
+            overflowY: "auto",
           },
         },
       }}
+      renderOption={(props, option) => (
+        <NavLink
+          to={`/game/${option.id}`}
+          onClick={() => setSearch("")} // limpia el input al elegir
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            width: "100%",
+            display: "block",
+          }}
+        >
+          <li {...props}>{option.name}</li>
+        </NavLink>
+      )}
       renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Buscar juego"
-          variant="outlined"
-        />
+        <TextField {...params} label="Buscar juego" variant="outlined" />
       )}
     />
   );
 }
 
-
-function NavButton({ page, action }) {
+function NavButton({ page, path }) {
   return (
     <Button
-      color='white'
-      sx={{ fontSize: '13px', flexGrow: 1 }}
-      onClick={action}
+      component={NavLink}
+      to={path}
+      color="white"
+      sx={{ fontSize: "13px", flexGrow: 1 }}
     >
       {page.icon} <span style={{ marginLeft: "10px" }}>{page.txt}</span>
     </Button>
-  )
-
+  );
 }
-
-
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#1976d2',
+      main: "#1976d2",
     },
   },
 });
 
+export default function NavBar() {
 
+      const pages = [
+        {
+          txt: "inicio",
+          icon: <HomeIcon />,
+          path : "/"
+          
+        },
+        {
+          txt: "contacto",
+          icon: <EmailIcon  />,
+          path : "/contact/"
+        },
+      ];
 
-
-
-export default function NavBar({ pages }) {
   const searchRef = useRef(null);
   const [showStickySearch, setShowStickySearch] = useState(false);
 
@@ -95,24 +119,23 @@ export default function NavBar({ pages }) {
     };
   }, []);
 
-
-
-
-
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar position="static">
         <Box sx={{ flexGrow: 1 }}>
-          <Toolbar ref={searchRef} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Toolbar
+            ref={searchRef}
+            sx={{ display: "flex", alignItems: "center", gap: 2 }}
+          >
             <Logo />
             <InputSeach />
-            <Box sx={{ display: 'flex', gap: 1, ml: 'auto' }}>
+            <Box sx={{ display: "flex", gap: 1, ml: "auto" }}>
               <CartWidget />
             </Box>
           </Toolbar>
           <Toolbar>
             {pages.map((p) => (
-              <NavButton key={`${p.txt}-nav`} action={p.action} page={p} />
+              <NavButton key={`${p.txt}-nav`} path={p.path} page={p} />
             ))}
           </Toolbar>
         </Box>
@@ -121,12 +144,12 @@ export default function NavBar({ pages }) {
       {showStickySearch && (
         <Box
           sx={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: { xs: 50, sm: 240 }, // ← 0 en mobile, 240 en desktop
-            width: { xs: '100%', sm: 'calc(40% - 240px)' },
+            width: { xs: "100%", sm: "calc(40% - 240px)" },
             zIndex: 1000,
-            backgroundColor: 'var(--bs-body-color)',
+            backgroundColor: "var(--bs-body-color)",
             px: 2,
             py: 1,
             boxShadow: 1,
@@ -134,7 +157,6 @@ export default function NavBar({ pages }) {
         >
           <InputSeach />
         </Box>
-
       )}
     </ThemeProvider>
   );

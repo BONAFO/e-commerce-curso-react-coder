@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useCart } from "../context/CartContext";
+import { NavLink } from "react-router";
 
 export default function ProductCard({ game }) {
   const { cart, setCart } = useCart();
@@ -17,7 +18,7 @@ export default function ProductCard({ game }) {
   };
 
   const handlePay = () => {
-    alert("nos vamo a pagar")
+    alert("nos vamo a pagar");
   };
 
   return (
@@ -63,12 +64,23 @@ export default function ProductCard({ game }) {
             sx={{ flex: 1 }}
           ></Button>
         ) : (
-          <Button variant="contained" onClick={handlePay} color="success" fullWidth sx={{ flex: 1 }}>
+          <Button
+            variant="contained"
+            onClick={handlePay}
+            color="success"
+            fullWidth
+            sx={{ flex: 1 }}
+          >
             PAGAR
           </Button>
         )}
-
-        <Button variant="outlined" fullWidth sx={{ flex: 1 }}>
+        <Button
+          component={NavLink}
+          to={`/game/${game.id}`}
+          variant="outlined"
+          fullWidth
+          sx={{ flex: 1, textDecoration: "none" }}
+        >
           Ver
         </Button>
       </Box>
