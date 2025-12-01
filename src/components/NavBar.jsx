@@ -11,6 +11,7 @@ import CartWidget from "./CartWidget";
 import Logo from "./Logo";
 import { useProductsByName } from "../hooks/Products";
 import { NavLink } from "react-router";
+import { routes } from "../router/router";
 
 function InputSeach() {
   const [search, setSearch] = useState("");
@@ -24,9 +25,6 @@ function InputSeach() {
       options={Array.isArray(products) ? products : []}
       getOptionLabel={(option) => option.name ?? ""}
       inputValue={search}
-      onChange={() => {
-        console.log(123);
-      }}
       onInputChange={(event, newInputValue) => {
         setSearch(newInputValue);
       }}
@@ -42,7 +40,7 @@ function InputSeach() {
       }}
       renderOption={(props, option) => (
         <NavLink
-          to={`/game/${option.id}`}
+          to={routes.productDetail.replace(":productID", option.id)}
           onClick={() => setSearch("")} // limpia el input al elegir
           style={{
             textDecoration: "none",
@@ -89,7 +87,7 @@ export default function NavBar() {
         {
           txt: "inicio",
           icon: <HomeIcon />,
-          path : "/"
+          path : routes.mainPage
           
         },
         {

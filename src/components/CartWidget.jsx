@@ -11,12 +11,11 @@ import {
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useCart } from '../context/CartContext';
+import { NavLink } from 'react-router';
+import { routes } from '../router/router';
 
 export default function CartWidget() {
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [cart, setCart] = useState([
-
-  // ]);
 
   const { cart, setCart} = useCart();
 
@@ -32,9 +31,7 @@ export default function CartWidget() {
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const goToPay=()=>{
-    alert("Nos vamos a pagar la prata!")
-  }
+
   return (
     <>
 
@@ -76,7 +73,7 @@ export default function CartWidget() {
             </MenuItem>
           ))
         )}
-        <Button color="info" sx={{ textAlign: "center", width: "100%" }} size="small" onClick={goToPay}>
+        <Button color="info" sx={{ textAlign: "center", width: "100%" }} size="small" component={NavLink} to={routes.productPay}>
           Pagar
         </Button>
       </Menu>

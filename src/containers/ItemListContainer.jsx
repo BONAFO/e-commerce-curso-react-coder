@@ -13,17 +13,26 @@ import {
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 
-import categories from "../db/categories.json";
 import ProductCard from "../components/ProductCard";
 import WaitingMsj from "../components/WaitingMsj";
-import { useProductMain } from "../context/ProductsMainContext";
+
+
 import { useMsjs } from "../context/LoadingMsjContext";
 import Spinner from "../components/Spinner";
+import { NavLink, useParams } from "react-router";
+import {  
+  useProductsByCategorieID,
+  useProductsByCategorieName,
+} from "../hooks/Products";
 
-function SidebarFilter() {
+import Capitalizate from "../functions/capitalizate";
+import { useCategories } from "../hooks/Categories";
+import { routes } from "../router/router";
+
+function SidebarFilter({categories}) {
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [collapsed, setCollapsed] = useState(isMobile); // collapsed by default on mobile
-  const { setCategorie, setProducts, categorieSelected } = useProductMain();
+  const { id } = useParams();
+  const [collapsed, setCollapsed] = useState(isMobile);
 
   const toggleSidebar = () => {
     setCollapsed((prev) => !prev);
@@ -71,19 +80,16 @@ function SidebarFilter() {
       <List sx={{ overflowY: "auto", maxHeight: "calc(80vh - 60px)" }}>
         {categories.map((cat) => (
           <ListItemButton
+          component={NavLink}
             key={cat.id}
-            onClick={() => {
-              if (categorieSelected != cat.id) {
-                handleFilter(cat.id);
-              }
-            }}
+            to={routes.mainPageCategorie.replace(":id", cat.id)}
             sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
           >
             <ListItemText
-              primary={cat.name}
+              primary={Capitalizate(cat.name)}
               sx={{
                 display: collapsed ? "none" : "block",
-                color: categorieSelected == cat.id ? "#a5e7ffff" : "#ffffff",
+                color: (id == cat.id) || (id == undefined && cat.id == -1) ? "#a5e7ffff" : "#ffffff",
               }}
             />
           </ListItemButton>
@@ -94,12 +100,29 @@ function SidebarFilter() {
 }
 
 export default function ItemListContainer({}) {
-  const { products,  spinner } = useProductMain();
+  const { id } = useParams();
+
+  const categorieSelected =
+    id == undefined ? ["id", -1] : isNaN(id) ? ["name", id] : ["id", id];
+
+  const usedHook =
+    categorieSelected[0] == "id"
+      ? useProductsByCategorieID
+      : useProductsByCategorieName;
+
+  const { products , spinner} = usedHook({
+    isDepend: categorieSelected[1],
+    [categorieSelected[0]]: categorieSelected[1],
+  });
+
+  const {categories, spinner: cat_spinner} = useCategories({});
+
   const { no_games } = useMsjs();
+
   return (
     <>
-      <Spinner loading={spinner} />
-      {Array.isArray(products) ? (
+      <Spinner loading={cat_spinner && spinner} />
+      {Array.isArray(products) && Array.isArray(categories) ? (
         <>
           <Box sx={{ display: "flex", minHeight: "100vh" }}>
             <Box
@@ -108,7 +131,7 @@ export default function ItemListContainer({}) {
                 transition: "width 0.3s ease",
               }}
             >
-              <SidebarFilter />
+              <SidebarFilter categories={categories}/>
             </Box>
 
             {products.length > 0 ? (
@@ -144,7 +167,6 @@ export default function ItemListContainer({}) {
         </>
       ) : (
         ""
-    
       )}
     </>
   );
