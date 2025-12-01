@@ -1,15 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useCart } from "../context/CartContext";
+import { NavLink } from "react-router";
+import { routes } from "../router/router";
 
 export function ProductMobile({ product }) {
   const { cart, setCart } = useCart();
 
   const handleAddToCart = () => {
     setCart([...cart, product]);
-  };
-
-  const handlePay = () => {
-    alert("nos vamo a pagar");
   };
 
   product.desc =
@@ -81,7 +79,8 @@ export function ProductMobile({ product }) {
 
               <Button
                 aria-label="carrito"
-                onClick={handlePay}
+                component={NavLink}
+                to={routes.productPay}
                 sx={{
                   color: "white",
                   backgroundColor: "transparent",
@@ -105,10 +104,6 @@ export function ProductDesk({ product }) {
 
   const handleAddToCart = () => {
     setCart([...cart, product]);
-  };
-
-  const handlePay = () => {
-    alert("nos vamo a pagar");
   };
 
   product.desc =
@@ -176,7 +171,8 @@ export function ProductDesk({ product }) {
 
                 <Button
                   aria-label="carrito"
-                  onClick={handlePay}
+                  component={NavLink}
+                  to={routes.productPay}
                   sx={{
                     color: "white",
                     backgroundColor: "transparent",

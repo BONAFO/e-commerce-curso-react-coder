@@ -1,8 +1,8 @@
 import { Box, Typography, Button } from "@mui/material";
 import { NavLink } from "react-router";
-import { routes } from "../../router/router";
+import { routes } from "../router/router";
 
-export default function E404() {
+export default function PayPage() {
   return (
     <Box
       sx={{
@@ -21,12 +21,13 @@ export default function E404() {
         gap: 3,
       }}
     >
-      <Typography variant="h1" sx={{ fontWeight: "bold", fontSize: "6rem" }}>
-        404
+      <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+        Pagando - WIP
       </Typography>
-      <Typography variant="h5" sx={{ opacity: 0.8 }}>
-        Oops... La página que buscás no existe
+      <Typography variant="h6" sx={{ opacity: 0.8 }}>
+        Esta sección está en construcción, pronto estará disponible
       </Typography>
+
       <Button
         component={NavLink}
         to={routes.mainPage}

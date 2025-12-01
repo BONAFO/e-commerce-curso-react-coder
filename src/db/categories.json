@@ -1,34 +1,42 @@
 [
-    {
-        "id": -1,
-        "name": "Todos"
-    },
-    {
-        "id": 1,
-        "name": "Acción"
-    },
-    {
-        "id": 2,
-        "name": "Aventura"
-    },
-    {
-        "id": 3,
-        "name": "Estrategia"
-    },
-    {
-        "id": 4,
-        "name": "Simulación"
-    },
-    {
-        "id": 5,
-        "name": "Disparos"
-    },
-    {
-        "id": 6,
-        "name": "Terror"
-    },
-    {
-        "id": 7,
-        "name": "Indie"
-    }
+  {
+    "id": -1,
+    "name": "todos",
+    "normalized": "todos"
+  },
+  {
+    "id": 1,
+    "name": "acción",
+    "normalized": "accion"
+  },
+  {
+    "id": 2,
+    "name": "aventura",
+    "normalized": "aventura"
+  },
+  {
+    "id": 3,
+    "name": "estrategia",
+    "normalized": "estrategia"
+  },
+  {
+    "id": 4,
+    "name": "simulación",
+    "normalized": "simulacion"
+  },
+  {
+    "id": 5,
+    "name": "disparos",
+    "normalized": "disparos"
+  },
+  {
+    "id": 6,
+    "name": "terror",
+    "normalized": "terror"
+  },
+  {
+    "id": 7,
+    "name": "indie",
+    "normalized": "indie"
+  }
 ]

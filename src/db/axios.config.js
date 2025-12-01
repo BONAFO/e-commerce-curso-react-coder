@@ -1,18 +1,14 @@
 import products from "./products.json";
-
-export const errorDict = {
-  db: {
-    404: "Ruta no encontrada",
-    500: "Error en el Servidor",
-    403: "No tienes permisos para hacer eso.",
-  },
-};
+import categories from "./categories.json";
 
 export const dbRoutes = {
   getProducts: "/get-products/",
   getProductsbyName: "/get-products/name/",
   getProductsbyID: "/get-products/id/",
-    getProductsbycatID: "/get-products/categorie/",
+  getProductsbycatID: "/get-products/categorie/",
+  getProductsbycatName: "/get-products/categoriename/",
+
+  getCategories: "/get-categories/",
 };
 
 // SIMULANDO AXIOS
@@ -64,12 +60,12 @@ export const axios = {
             }
             break;
 
-
-
           case dbRoutes["getProductsbycatID"]:
             resp = {
               status: 200,
-              data: products.filter((item) => item.categorie == head.categorie),
+              data: products.filter(
+                (item) => item.categorie == head.categorie_id
+              ),
             };
 
             if (resp.status == 200) {
@@ -79,6 +75,36 @@ export const axios = {
             }
             break;
 
+          case dbRoutes["getProductsbycatName"]:
+            const categorieID = categories.filter(
+              (cat) => cat.normalized == head.categorie_name
+            )[0].id;
+
+            resp = {
+              status: 200,
+              data: products.filter((item) => item.categorie == categorieID),
+            };
+
+            if (resp.status == 200) {
+              resolve(resp);
+            } else {
+              reject(resp);
+            }
+            break;
+
+          case dbRoutes["getCategories"]:
+            resp = {
+              status: 200,
+              data: categories,
+            };
+
+            if (resp.status == 200) {
+              resolve(resp);
+            } else {
+              reject(resp);
+            }
+
+            break;
           default:
             break;
         }
