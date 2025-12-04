@@ -6,11 +6,11 @@ export const useCart = () => useContext(CartContext);
 export default function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-
   return (
     <CartContext.Provider
       value={{
-cart, setCart
+        cart,
+        setCart,
       }}
     >
       {children}

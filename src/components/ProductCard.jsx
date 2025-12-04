@@ -26,6 +26,7 @@ export default function ProductCard({ game }) {
         flexDirection: "column",
         justifyContent: "space-between",
         userSelect: "none",
+        backgroundColor: "#343434bb",
       }}
     >
       <CardMedia
@@ -37,8 +38,10 @@ export default function ProductCard({ game }) {
       />
 
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h5">{game.name}</Typography>
-        <Typography variant="label" color="text.secondary">
+        <Typography variant="h5" color="#b7b7b7ff">
+          {game.name}
+        </Typography>
+        <Typography variant="label" color="#b7b7b7ff">
           ${game.price}
         </Typography>
       </CardContent>
@@ -65,7 +68,7 @@ export default function ProductCard({ game }) {
             component={NavLink}
             to={routes.productPay}
             variant="contained"
-            color="success"
+            color="info"
             fullWidth
             sx={{ flex: 1 }}
           >
@@ -77,6 +80,7 @@ export default function ProductCard({ game }) {
           to={routes.productDetail.replace(":productID", game.id)}
           variant="outlined"
           fullWidth
+          color="info"
           sx={{ flex: 1, textDecoration: "none" }}
         >
           Ver
