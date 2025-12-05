@@ -93,7 +93,7 @@ export default function NavBar() {
         {
           txt: "contacto",
           icon: <EmailIcon  />,
-          path : "/contact/"
+          path : routes.contact
         },
       ];
 
