@@ -5,6 +5,7 @@ import ProductPage from "../pages/ProductPage";
 import NavBar from "../components/NavBar";
 import E404 from "../pages/Errors/404.jsx";
 import PayPage from "../pages/PayPage.jsx";
+import ContactPage from "../pages/ContactPage.jsx";
 
 export const routes = {
   mainPage: "/",
@@ -12,6 +13,7 @@ export const routes = {
   mainPageCategorie: "/categorias/:id",
   productDetail: "/game/:productID",
   productPay: "/products/pay",
+  contact: "/contact",
   error404: "*",
 };
 
@@ -35,6 +37,7 @@ export default function Router() {
           <Route path={routes.mainPageCategorie} element={<MainPage />} />
           <Route path={routes.productDetail} element={<ProductPage />} />
           <Route path={routes.productPay} element={<PayPage />} />
+          <Route path={routes.contact} element={<ContactPage />} />
         </Route>
 
         {/* Rutas sin NavBar */}
