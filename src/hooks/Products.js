@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
-import { axios, dbRoutes } from "../db/axios.config";
+import service, { MODE } from "../db/services";
 import { useMsjs } from "../context/LoadingMsjContext";
+
+const {
+  getProducts,
+  getProductsbyName,
+  getProductsbyID,
+  getProductsbycatID,
+  getProductsbycatName,
+} = service[MODE];
 
 export const useProducts = ({ isDepend = false }) => {
   const [products, setProducts] = useState(null);
@@ -13,18 +21,19 @@ export const useProducts = ({ isDepend = false }) => {
     setProducts([...response.data]);
   };
 
-  const dbCall = () => {
-    axios
-      .get(dbRoutes["getProducts"])
+ 
+
+  useEffect(()=>{
+        getProducts()
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
-  };
+  }, 
 
-  useEffect(dbCall, [
+    [
     typeof isDepend == "boolean"
       ? isDepend === false
-        ? products
-        : isDepend
+        ? undefined
+        : products
       : isDepend,
   ]);
 
@@ -46,18 +55,16 @@ export const useProductsByName = ({ isDepend = false, name }) => {
     setProducts([...response.data]);
   };
 
-  const dbCall = () => {
-    axios
-      .get(dbRoutes["getProductsbyName"], {}, { name })
+
+  useEffect(()=>{
+       getProductsbyName(name)
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
-  };
-
-  useEffect(dbCall, [
+  }, [
     typeof isDepend == "boolean"
       ? isDepend === false
-        ? products
-        : isDepend
+        ? undefined
+        : products
       : isDepend,
   ]);
 
@@ -80,21 +87,17 @@ export const useProductsByID = ({ isDepend = false, id }) => {
     setSpinner(false);
   };
 
-  const dbCall = () => {
-    axios
-      .get(dbRoutes["getProductsbyID"], {}, { id })
-      .then((resp) => handleSuccess(resp))
-      .catch((err) => handleError(err));
-  };
 
   useEffect(() => {
     setSpinner(true);
-    dbCall();
+       getProductsbyID(id)
+      .then((resp) => handleSuccess(resp))
+      .catch((err) => handleError(err));
   }, [
     typeof isDepend == "boolean"
       ? isDepend === false
-        ? product
-        : isDepend
+        ? undefined
+        : product
       : isDepend,
   ]);
 
@@ -118,26 +121,18 @@ export const useProductsByCategorieID = ({ isDepend = false, id }) => {
     setProducts([...response.data]);
   };
 
-  const dbCall = () => {
-    axios
-      .get(
-        dbRoutes[id == -1 ? "getProducts" : "getProductsbycatID"],
-        {},
-        { categorie_id: id }
-      )
-      .then((resp) => handleSuccess(resp))
-      .catch((err) => handleError(err));
-  };
-
-
   useEffect(() => {
     setSpinner(true);
-    dbCall();
+      const functionToUse = id == -1 ? getProducts : getProductsbycatID;
+    functionToUse(id)
+      .then((resp) => handleSuccess(resp))
+      .catch((err) => handleError(err));
+
   }, [
     typeof isDepend == "boolean"
       ? isDepend === false
-        ? product
-        : isDepend
+        ? undefined
+        : id
       : isDepend,
   ]);
 
@@ -162,26 +157,17 @@ export const useProductsByCategorieName = ({ isDepend = false, name }) => {
     setProducts([...response.data]);
   };
 
-  const dbCall = () => {
-    axios
-      .get(
-        dbRoutes["getProductsbycatName"],
-        {},
-        { categorie_name : name}
-      )
-      .then((resp) => handleSuccess(resp))
-      .catch((err) => handleError(err));
-  };
-
 
   useEffect(() => {
     setSpinner(true);
-    dbCall();
+    getProductsbycatName(name)
+      .then((resp) => handleSuccess(resp))
+      .catch((err) => handleError(err));
   }, [
     typeof isDepend == "boolean"
       ? isDepend === false
-        ? product
-        : isDepend
+        ? undefined
+        : products
       : isDepend,
   ]);
 
