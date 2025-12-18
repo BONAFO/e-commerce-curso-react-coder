@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { axios, dbRoutes } from "../db/axios.config";
+import service, { MODE } from "../db/services";
+
+const { getCategories } = service[MODE];
 
 export const useCategories = ({ isDepend = false }) => {
   const [categories, setCategories] = useState(null);
@@ -14,23 +16,19 @@ export const useCategories = ({ isDepend = false }) => {
     setCategories([...response.data]);
   };
 
-  const dbCall = () => {
-    axios
-      .get(dbRoutes["getCategories"])
-      .then((resp) => handleSuccess(resp))
-      .catch((err) => handleError(err));
-  };
-
   useEffect(() => {
     setSpinner(true);
-    dbCall();
+    getCategories()
+      .then((resp) => handleSuccess(resp))
+      .catch((err) => handleError(err));
   }, [
     typeof isDepend == "boolean"
       ? isDepend === false
-        ? categories
-        : isDepend
+        ? undefined
+        : categories
       : isDepend,
-  ]);
+  ]
+);
 
   return {
     setCategories,
