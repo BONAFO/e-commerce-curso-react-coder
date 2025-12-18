@@ -1,7 +1,7 @@
 import products from "./products.json";
 import categories from "./categories.json";
 
-export const getProducts = async () => {
+ const getProducts = async () => {
   return new Promise((resolve, reject) => {
     const resp = {
       status: 200,
@@ -16,7 +16,7 @@ export const getProducts = async () => {
   });
 };
 
-export const getProductsbyName = async (name) => {
+ const getProductsByName = async (name) => {
   return new Promise((resolve, reject) => {
     const resp = {
       status: 200,
@@ -33,7 +33,7 @@ export const getProductsbyName = async (name) => {
   });
 };
 
-export const getProductsbyID = async (id) => {
+ const getProductsByID = async (id) => {
   return new Promise((resolve, reject) => {
     const resp = {
       status: 200,
@@ -48,7 +48,7 @@ export const getProductsbyID = async (id) => {
   });
 };
 
-export const getProductsbycatID = async (categorieID) => {
+ const getProductsByCatID = async (categorieID) => {
   return new Promise((resolve, reject) => {
     const resp = {
       status: 200,
@@ -63,7 +63,7 @@ export const getProductsbycatID = async (categorieID) => {
   });
 };
 
-export const getProductsbycatName = async (categorieName) => {
+ const getProductsByCatName = async (categorieName) => {
   return new Promise((resolve, reject) => {
     const categorieID = categories.filter(
       (cat) => cat.normalized == categorieName
@@ -82,7 +82,7 @@ export const getProductsbycatName = async (categorieName) => {
   });
 };
 
-export const getCategories = async () => {
+ const getCategories = async () => {
   return new Promise((resolve, reject) => {
     const resp = {
       status: 200,
@@ -96,3 +96,16 @@ export const getCategories = async () => {
     }
   });
 };
+
+export default {getProducts,
+getProductsByName,
+getProductsByID,
+getProductsByCatID,
+getProductsByCatName,
+getCategories,}
+
+
+
+
+
+

@@ -4,10 +4,10 @@ import { useMsjs } from "../context/LoadingMsjContext";
 
 const {
   getProducts,
-  getProductsbyName,
-  getProductsbyID,
-  getProductsbycatID,
-  getProductsbycatName,
+  getProductsByName,
+  getProductsByID,
+  getProductsByCatID,
+  getProductsByCatName,
 } = service[MODE];
 
 export const useProducts = ({ isDepend = false }) => {
@@ -21,15 +21,11 @@ export const useProducts = ({ isDepend = false }) => {
     setProducts([...response.data]);
   };
 
- 
-
-  useEffect(()=>{
-        getProducts()
+  useEffect(() => {
+    getProducts()
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
-  }, 
-
-    [
+  }, [
     typeof isDepend == "boolean"
       ? isDepend === false
         ? undefined
@@ -55,9 +51,8 @@ export const useProductsByName = ({ isDepend = false, name }) => {
     setProducts([...response.data]);
   };
 
-
-  useEffect(()=>{
-       getProductsbyName(name)
+  useEffect(() => {
+    getProductsByName(name)
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
   }, [
@@ -87,10 +82,9 @@ export const useProductsByID = ({ isDepend = false, id }) => {
     setSpinner(false);
   };
 
-
   useEffect(() => {
     setSpinner(true);
-       getProductsbyID(id)
+    getProductsByID(id)
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
   }, [
@@ -123,11 +117,11 @@ export const useProductsByCategorieID = ({ isDepend = false, id }) => {
 
   useEffect(() => {
     setSpinner(true);
-      const functionToUse = id == -1 ? getProducts : getProductsbycatID;
+    const functionToUse = !id  ? getProducts : getProductsByCatID;
+
     functionToUse(id)
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
-
   }, [
     typeof isDepend == "boolean"
       ? isDepend === false
@@ -157,10 +151,9 @@ export const useProductsByCategorieName = ({ isDepend = false, name }) => {
     setProducts([...response.data]);
   };
 
-
   useEffect(() => {
     setSpinner(true);
-    getProductsbycatName(name)
+    getProductsByCatName(name)
       .then((resp) => handleSuccess(resp))
       .catch((err) => handleError(err));
   }, [

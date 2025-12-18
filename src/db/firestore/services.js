@@ -1,21 +1,178 @@
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDoc,
+  getDocs,
+  doc,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "./conection";
 
 /**
- * Obtiene todos los documentos de una colección
- * @param {string} collectionName - Nombre de la colección
- * @returns {Promise<Array>} - Array con los documentos { id, ...data }
+ * Obtiene todos los documentos de la colección "products" en Firestore.
+ *
+ * @returns {Promise<Array<{id: string, [key: string]: any}>>}
+ * Un array con los documentos, cada uno con su id y datos.
  */
-export async function getCollectionData(collectionName) {
+const getProducts = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, collectionName));
-    const docs = querySnapshot.docs.map(doc => ({
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const products = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    return docs; 
+    return { data: products };
   } catch (error) {
-    console.error("Error obteniendo colección:", error);
+    console.error("Error obteniendo productos:", error);
     throw error;
   }
-}
+};
+
+/**
+ * Obtiene documentos de la colección "products" filtrados por nombre.
+ *
+ * @param {string} name - Valor del campo "nombre" a buscar.
+ * @returns {Promise<Array<{id: string, [key: string]: any}>>}
+ * Un array de objetos con el id y los datos de cada documento que coincide.
+ */
+const getProductsByName = async (name) => {
+  try {
+    const q = query(
+      collection(db, "products"),
+      where("nombre", "==", name) // campo "nombre" debe existir en tus docs
+    );
+
+    const querySnapshot = await getDocs(q);
+    const products = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return { data: products };
+  } catch (error) {
+    console.error("Error obteniendo productos por nombre:", error);
+    throw error;
+  }
+};
+
+/**
+ * Obtiene un documento de la colección "products" por su ID (document ID).
+ *
+ * @param {string} id - ID del documento en Firestore.
+ * @returns {Promise<{data: {id: string, [key: string]: any} | null}>}
+ * El documento con sus datos en { data }, o { data: null } si no existe.
+ */
+const getProductsByID = async (id) => {
+  try {
+    const ref = doc(db, "products", id); // referencia directa al doc
+    const snapshot = await getDoc(ref); // obtener snapshot
+
+    if (snapshot.exists()) {
+      return { data: [{ id: snapshot.id, ...snapshot.data() }] };
+    } else {
+      return { data: null };
+    }
+  } catch (error) {
+    console.error("Error obteniendo producto por ID:", error);
+    throw error;
+  }
+};
+
+/**
+ * Obtiene documentos de la colección "products" filtrados por categoría.
+ *
+ * @param {string} categorieID - ID de la categoría a buscar dentro del array "categorie".
+ * @returns {Promise<Array<{id: string, [key: string]: any}>>}
+ * Un array de objetos con el id y los datos de cada documento que coincide.
+ */
+const getProductsByCatID = async (categorieID) => {
+  try {
+    const q = query(
+      collection(db, "products"),
+      where("categorie", "array-contains", categorieID) // ahora "categorie" es un []
+    );
+
+    const querySnapshot = await getDocs(q);
+    const products = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return { data: products };
+  } catch (error) {
+    console.error("Error obteniendo productos por categoría:", error);
+    throw error;
+  }
+};
+
+/**
+ * Obtiene productos filtrados por nombre de categoría.
+ *
+ * @param {string} categorieName - Nombre de la categoría.
+ * @returns {Promise<Array<{id: string, [key: string]: any}>>}
+ * Array de productos que pertenecen a esa categoría.
+ */
+const getProductsByCatName = async (categorieName) => {
+  try {
+    // 1. Buscar la categoría por nombre
+    const catQuery = query(
+      collection(db, "categories"),
+      where("name", "==", categorieName)
+    );
+    const catSnapshot = await getDocs(catQuery);
+
+    if (catSnapshot.empty) {
+      return { data: [] }; // no existe esa categoría
+    }
+
+    // Tomamos el primer resultado (suponiendo nombres únicos)
+    const categoryDoc = catSnapshot.docs[0];
+    const categoryID = categoryDoc.id;
+
+    // 2. Buscar productos con ese categorieID
+    const prodQuery = query(
+      collection(db, "products"),
+      where("categorie", "==", categoryID)
+    );
+    const prodSnapshot = await getDocs(prodQuery);
+
+    const products = prodSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return { data: products };
+  } catch (error) {
+    console.error("Error obteniendo productos por nombre de categoría:", error);
+    throw error;
+  }
+};
+
+/**
+ * Obtiene todos los documentos de la colección "categories" en Firestore.
+ *
+ * @returns {Promise<Array<{id: string, [key: string]: any}>>}
+ * Un array con las categorías, cada una con su id y datos.
+ */
+const getCategories = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "categories"));
+    const categories = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return { data: categories };
+  } catch (error) {
+    console.error("Error obteniendo categorías:", error);
+    throw error;
+  }
+};
+
+export default {
+  getProducts,
+  getProductsByName,
+  getProductsByID,
+  getProductsByCatID,
+  getProductsByCatName,
+  getCategories,
+};
