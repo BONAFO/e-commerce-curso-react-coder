@@ -1,24 +1,11 @@
-import {
-  getCategories,
-  getProducts,
-  getProductsbycatID,
-  getProductsbycatName,
-  getProductsbyID,
-  getProductsbyName,
-} from "./mock/service";
+import mock from "./mock/service";
+import firestore from "./firestore/services";
 
-export const MODE = "mock";
+export const MODE = "firestore";
 
 const service = {
-  mock: {
-    getProducts,
-    getProductsbyName,
-    getProductsbyID,
-    getProductsbycatID,
-    getProductsbycatName,
-    getCategories,
-  },
+  mock,
+  firestore,
 };
-
 
 export default service;

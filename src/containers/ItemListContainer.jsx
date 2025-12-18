@@ -38,11 +38,12 @@ function SidebarFilter({categories}) {
     setCollapsed((prev) => !prev);
   };
 
-  const handleFilter = (catID) => {
-    setProducts(null);
-    setCategorie(catID);
-  };
+  const lang ="es";
+  categories = categories.sort((a, b) => a[`name_${lang}`].localeCompare(b[`name_${lang}`]));
+  // categories = categories.sort((a, b) => a[`name_${lang}`]).localeCompare(b.data().));
+  categories = [categories.filter(cat => cat.normalized_es == "todos")[0],...categories.filter(cat => cat.normalized_es != "todos")]
 
+  
   return (
     <Box
       sx={{
@@ -86,10 +87,10 @@ function SidebarFilter({categories}) {
             sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
           >
             <ListItemText
-              primary={Capitalizate(cat.name)}
+              primary={Capitalizate(cat[`name_${lang}`])}
               sx={{
                 display: collapsed ? "none" : "block",
-                color: (id == cat.id) || (id == undefined && cat.id == -1) ? "#a5e7ffff" : "#ffffff",
+                color: (id == cat.id) || (id == undefined && cat.name_es == "todos") ? "#a5e7ffff" : "#ffffff",
               }}
             />
           </ListItemButton>
@@ -102,17 +103,17 @@ function SidebarFilter({categories}) {
 export default function ItemListContainer({}) {
   const { id } = useParams();
 
-  const categorieSelected =
-    id == undefined ? ["id", -1] : isNaN(id) ? ["name", id] : ["id", id];
+  // const categorieSelected =
+  //   id == undefined ? ["id", -1] : isNaN(id) ? ["name", id] : ["id", id];
 
-  const usedHook =
-    categorieSelected[0] == "id"
-      ? useProductsByCategorieID
-      : useProductsByCategorieName;
+  const usedHook =useProductsByCategorieID;
+    // categorieSelected[0] == "id"
+    //   ? useProductsByCategorieID
+    //   : useProductsByCategorieName;
 
   const { products , spinner} = usedHook({
-    isDepend: categorieSelected[1],
-    [categorieSelected[0]]: categorieSelected[1],
+    isDepend: id,
+    ["id"]: id,
   });
 
   const {categories, spinner: cat_spinner} = useCategories({});
