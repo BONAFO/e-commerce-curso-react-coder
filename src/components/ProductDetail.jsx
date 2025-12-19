@@ -10,8 +10,6 @@ export function ProductMobile({ product }) {
     setCart([...cart, product]);
   };
 
-  product.desc =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam soluta voluptatibus molestiae praesentium deleniti molestias earum rem vitae quidem non, error consequuntur ex dolore facilis eius magnam officiis corrupti.";
   return (
     <>
       <tr>
@@ -106,8 +104,7 @@ export function ProductDesk({ product }) {
     setCart([...cart, product]);
   };
 
-  product.desc =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit numquam soluta voluptatibus molestiae praesentium deleniti molestias earum rem vitae quidem non, error consequuntur ex dolore facilis eius magnam officiis corrupti.";
+
   return (
     <>
       <tr>

@@ -23,6 +23,7 @@ import { NavLink, useParams } from "react-router";
 import {  
   useProductsByCategorieID,
   useProductsByCategorieName,
+  useRouterCategories,
 } from "../hooks/Products";
 
 import Capitalizate from "../functions/capitalizate";
@@ -37,6 +38,9 @@ function SidebarFilter({categories}) {
   const toggleSidebar = () => {
     setCollapsed((prev) => !prev);
   };
+
+
+
 
   const lang ="es";
   categories = categories.sort((a, b) => a[`name_${lang}`].localeCompare(b[`name_${lang}`]));
@@ -111,10 +115,17 @@ export default function ItemListContainer({}) {
     //   ? useProductsByCategorieID
     //   : useProductsByCategorieName;
 
-  const { products , spinner} = usedHook({
+  const { products , spinner} = useRouterCategories({
     isDepend: id,
     ["id"]: id,
   });
+
+  //   const { pro2ducts , spin2ner} = useRouterCategories({
+  //   isDepend: id,
+  //   ["id"]: id,
+  // });
+
+  
 
   const {categories, spinner: cat_spinner} = useCategories({});
 

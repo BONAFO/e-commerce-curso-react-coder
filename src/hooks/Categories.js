@@ -30,6 +30,7 @@ export const useCategories = ({ isDepend = false }) => {
   ]
 );
 
+
   return {
     setCategories,
     categories,
