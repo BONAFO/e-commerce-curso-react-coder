@@ -1,42 +1,58 @@
 [
   {
     "id": -1,
-    "name": "todos",
-    "normalized": "todos"
+    "name_es": "todos",
+    "normalized_es": "todos",
+    "name_en": "all",
+    "normalized_en": "all"
   },
   {
     "id": 1,
-    "name": "acción",
-    "normalized": "accion"
+    "name_es": "acción",
+    "normalized_es": "accion",
+    "name_en": "action",
+    "normalized_en": "action"
   },
   {
     "id": 2,
-    "name": "aventura",
-    "normalized": "aventura"
+    "name_es": "aventura",
+    "normalized_es": "aventura",
+    "name_en": "adventure",
+    "normalized_en": "adventure"
   },
   {
     "id": 3,
-    "name": "estrategia",
-    "normalized": "estrategia"
+    "name_es": "estrategia",
+    "normalized_es": "estrategia",
+    "name_en": "strategy",
+    "normalized_en": "strategy"
   },
   {
     "id": 4,
-    "name": "simulación",
-    "normalized": "simulacion"
+    "name_es": "simulación",
+    "normalized_es": "simulacion",
+    "name_en": "simulation",
+    "normalized_en": "simulation"
   },
   {
     "id": 5,
-    "name": "disparos",
-    "normalized": "disparos"
+    "name_es": "disparos",
+    "normalized_es": "disparos",
+    "name_en": "shooting",
+    "normalized_en": "shooting"
   },
   {
     "id": 6,
-    "name": "terror",
-    "normalized": "terror"
+    "name_es": "terror",
+    "normalized_es": "terror",
+    "name_en": "horror",
+    "normalized_en": "horror"
   },
   {
     "id": 7,
-    "name": "indie",
-    "normalized": "indie"
+    "name_es": "indie",
+    "normalized_es": "indie",
+    "name_en": "indie",
+    "normalized_en": "indie"
   }
 ]

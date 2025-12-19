@@ -105,43 +105,132 @@ const getProductsByCatID = async (categorieID) => {
   }
 };
 
+// /**
+//  * Obtiene productos filtrados por nombre de categoría.
+//  *
+//  * @param {string} categorieName - Nombre de la categoría.
+//  * @returns {Promise<Array<{id: string, [key: string]: any}>>}
+//  * Array de productos que pertenecen a esa categoría.
+//  */
+// const getProductsByCatName = async (categorieName) => {
+//   try {
+//     // 1. Buscar la categoría por nombre
+//     const catQuery = query(
+//       collection(db, "categories"),
+//       where("name", "==", categorieName)
+//     );
+//     const catSnapshot = await getDocs(catQuery);
+
+//     if (catSnapshot.empty) {
+//       return { data: [] }; // no existe esa categoría
+//     }
+
+//     // Tomamos el primer resultado (suponiendo nombres únicos)
+//     const categoryDoc = catSnapshot.docs[0];
+//     const categoryID = categoryDoc.id;
+
+//     // 2. Buscar productos con ese categorieID
+//     const prodQuery = query(
+//       collection(db, "products"),
+//       where("categorie", "==", categoryID)
+//     );
+//     const prodSnapshot = await getDocs(prodQuery);
+
+//     const products = prodSnapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     return { data: products };
+//   } catch (error) {
+//     console.error("Error obteniendo productos por nombre de categoría:", error);
+//     throw error;
+//   }
+// };
+
 /**
- * Obtiene productos filtrados por nombre de categoría.
+ * Obtiene productos filtrados por nombre de categoría en normalized_es o normalized_en.
  *
- * @param {string} categorieName - Nombre de la categoría.
+ * @param {string} categorieName - Nombre normalizado de la categoría (puede estar en español o inglés).
  * @returns {Promise<Array<{id: string, [key: string]: any}>>}
  * Array de productos que pertenecen a esa categoría.
  */
 const getProductsByCatName = async (categorieName) => {
   try {
-    // 1. Buscar la categoría por nombre
-    const catQuery = query(
+    let q = query(
       collection(db, "categories"),
-      where("name", "==", categorieName)
+      where("normalized_es", "==", categorieName)
     );
-    const catSnapshot = await getDocs(catQuery);
 
-    if (catSnapshot.empty) {
-      return { data: [] }; // no existe esa categoría
+    let snapshot;
+
+    const catSnapshotEs = await getDocs(q);
+
+    snapshot = catSnapshotEs;
+
+    if (catSnapshotEs.docs.length === 0) {
+      q = query(
+        collection(db, "categories"),
+        where("normalized_en", "==", categorieName)
+      );
+
+      const catSnapshotEn = await getDocs(q);
+
+      if (catSnapshotEn.docs.length === 0) {
+        return { data: [] };
+      }
+
+      snapshot = catSnapshotEn;
     }
+    
+    return await getProductsByCatID(snapshot.docs[0].id);
 
-    // Tomamos el primer resultado (suponiendo nombres únicos)
-    const categoryDoc = catSnapshot.docs[0];
-    const categoryID = categoryDoc.id;
+    // // 1. Buscar la categoría por normalized_es
+    // const catQueryEs = query(
+    //   collection(db, "categories"),
+    //   where("normalized_es", "==", categorieName)
+    // );
 
-    // 2. Buscar productos con ese categorieID
-    const prodQuery = query(
-      collection(db, "products"),
-      where("categorie", "==", categoryID)
-    );
-    const prodSnapshot = await getDocs(prodQuery);
+    // console.log("catQueryEs",catQueryEs.docs);
 
-    const products = prodSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    // console.log(categorieName);
 
-    return { data: products };
+    // const catSnapshotEs = await getDocs(catQueryEs);
+
+    // // 2. Buscar la categoría por normalized_en
+    // const catQueryEn = query(
+    //   collection(db, "categories"),
+    //   where("normalized_en", "==", "shooting")
+    // );
+
+    // console.log("catQueryEn",catQueryEn.docs);
+
+    // const catSnapshotEn = await getDocs(catQueryEn);
+
+    // // Combinar resultados
+    // const catDocs = [...catSnapshotEs.docs, ...catSnapshotEn.docs];
+
+    // if (catDocs.length === 0) {
+    //   return { data: [] }; // no existe esa categoría
+    // }
+
+    // // Tomamos el primer resultado (suponiendo nombres únicos)
+    // const categoryDoc = catDocs[0];
+    // const categoryID = categoryDoc.id;
+
+    // // 3. Buscar productos con ese categorieID
+    // const prodQuery = query(
+    //   collection(db, "products"),
+    //   where("categorie", "==", categoryID)
+    // );
+    // const prodSnapshot = await getDocs(prodQuery);
+
+    // const products = prodSnapshot.docs.map((doc) => ({
+    //   id: doc.id,
+    //   ...doc.data(),
+    // }));
+
+    // return { data: products };
   } catch (error) {
     console.error("Error obteniendo productos por nombre de categoría:", error);
     throw error;

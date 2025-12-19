@@ -117,7 +117,7 @@ export const useProductsByCategorieID = ({ isDepend = false, id }) => {
 
   useEffect(() => {
     setSpinner(true);
-    const functionToUse = !id  ? getProducts : getProductsByCatID;
+    const functionToUse = !id ? getProducts : getProductsByCatID;
 
     functionToUse(id)
       .then((resp) => handleSuccess(resp))
@@ -161,6 +161,49 @@ export const useProductsByCategorieName = ({ isDepend = false, name }) => {
       ? isDepend === false
         ? undefined
         : products
+      : isDepend,
+  ]);
+
+  return {
+    setProducts,
+    products,
+    spinner,
+    setSpinner,
+  };
+};
+
+export const useRouterCategories = ({ isDepend = false, id }) => {
+  const [products, setProducts] = useState(null);
+  const [spinner, setSpinner] = useState(true);
+
+  const handleError = (response) => {
+    setSpinner(false);
+    throw Error(response);
+  };
+  const handleSuccess = (response) => {
+    setSpinner(false);
+    setProducts([...response.data]);
+  };
+
+  useEffect(() => {
+    !id
+      ? getProducts()
+          .then((resp) => handleSuccess(resp))
+          .catch((err) => handleError(err))
+      : getProductsByCatID(id)
+          .then((resp) => {
+            resp.data.length > 0
+              ? handleSuccess(resp)
+              : getProductsByCatName(id)
+                  .then((resp) => handleSuccess(resp))
+                  .catch((err) => handleError(err));
+          })
+          .catch((err) => handleError(err));
+  }, [
+    typeof isDepend == "boolean"
+      ? isDepend === false
+        ? undefined
+        : id
       : isDepend,
   ]);
 
