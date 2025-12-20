@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import { useScreen } from "../context/ScreenContext";
-import { ProductDesk, ProductMobile } from "../components/ProductDetail";
+import { ProductDesk, ProductMobile } from "../test/ProductDetail";
 import { useProductsByID } from "../hooks/Products";
 import Spinner from "../components/Spinner";
 

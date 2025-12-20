@@ -7,9 +7,9 @@ import {
   Box,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import { NavLink } from "react-router";
-import { routes } from "../router/router";
+import { routes } from "../../router/router";
 
 export default function ProductCard({ game }) {
   const { cart, setCart } = useCart();
@@ -66,7 +66,7 @@ export default function ProductCard({ game }) {
         ) : (
           <Button
             component={NavLink}
-            to={routes.productPay}
+            to={routes.productBill}
             variant="contained"
             color="info"
             fullWidth
