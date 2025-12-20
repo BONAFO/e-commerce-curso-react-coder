@@ -12,17 +12,12 @@ import {
 
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-
 import ProductCard from "../components/ProductCard";
 import WaitingMsj from "../components/WaitingMsj";
-
-
 import { useMsjs } from "../context/LoadingMsjContext";
 import Spinner from "../components/Spinner";
 import { NavLink, useParams } from "react-router";
 import {  
-  useProductsByCategorieID,
-  useProductsByCategorieName,
   useRouterCategories,
 } from "../hooks/Products";
 
@@ -40,11 +35,8 @@ function SidebarFilter({categories}) {
   };
 
 
-
-
   const lang ="es";
   categories = categories.sort((a, b) => a[`name_${lang}`].localeCompare(b[`name_${lang}`]));
-  // categories = categories.sort((a, b) => a[`name_${lang}`]).localeCompare(b.data().));
   categories = [categories.filter(cat => cat.normalized_es == "todos")[0],...categories.filter(cat => cat.normalized_es != "todos")]
 
   
@@ -107,25 +99,12 @@ function SidebarFilter({categories}) {
 export default function ItemListContainer({}) {
   const { id } = useParams();
 
-  // const categorieSelected =
-  //   id == undefined ? ["id", -1] : isNaN(id) ? ["name", id] : ["id", id];
-
-  const usedHook =useProductsByCategorieID;
-    // categorieSelected[0] == "id"
-    //   ? useProductsByCategorieID
-    //   : useProductsByCategorieName;
 
   const { products , spinner} = useRouterCategories({
     isDepend: id,
     ["id"]: id,
   });
 
-  //   const { pro2ducts , spin2ner} = useRouterCategories({
-  //   isDepend: id,
-  //   ["id"]: id,
-  // });
-
-  
 
   const {categories, spinner: cat_spinner} = useCategories({});
 
