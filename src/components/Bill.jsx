@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { routes } from "../router/router";
 import { useCart } from "../context/CartContext";
 
-export function PaymentEmptyCart() {
+export function BillEmptyCart() {
   return (
     <Box
       sx={{
@@ -31,7 +31,7 @@ export function PaymentEmptyCart() {
   );
 }
 
-export function PaymentCart() {
+export function BillCart() {
   const { cart, setCart } = useCart();
 
   const handleRemove = (productID) => {
@@ -122,9 +122,9 @@ export function PaymentCart() {
           </Button>
 
           <Button
-            component={NavLink}
             sx={{ fontSize: "20px", color: "#a6d4ffff" }}
             variant="contained"
+            component={NavLink}
             to={routes.mainPage}
             color="primary"
           >
@@ -134,7 +134,10 @@ export function PaymentCart() {
           <Button
             sx={{ fontSize: "20px", color: "#93ffccff" }}
             variant="contained"
+            type="submit"
             color="success"
+            component={NavLink}
+            to={routes.productPay}
             onClick={() => {}}
           >
             Pagar

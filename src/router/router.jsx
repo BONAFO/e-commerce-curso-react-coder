@@ -2,15 +2,17 @@ import { BrowserRouter, Routes, Route, NavLink, Outlet } from "react-router";
 import MainPage from "../pages/MainPage";
 import ProductPage from "../pages/ProductPage";
 import E404 from "../pages/Errors/404.jsx";
-import PayPage from "../pages/PayPage.jsx";
+import BillPage from "../pages/BillPage.jsx";
 import ContactPage from "../pages/ContactPage.jsx";
 import NavBarContainer from "../containers/NavBarContainer.jsx";
+import PayPage from "../pages/PayPage.jsx";
 
 export const routes = {
   mainPage: "/",
   mainPageCategories: "/categorias/",
   mainPageCategorie: "/categorias/:id",
   productDetail: "/game/:productID",
+  productBill: "/products/bill",
   productPay: "/products/pay",
   contact: "/contact",
   error404: "*",
@@ -35,13 +37,15 @@ export default function Router() {
           <Route path={routes.mainPageCategories} element={<MainPage />} />
           <Route path={routes.mainPageCategorie} element={<MainPage />} />
           <Route path={routes.productDetail} element={<ProductPage />} />
-          <Route path={routes.productPay} element={<PayPage />} />
+          <Route path={routes.productBill} element={<BillPage />} />
           <Route path={routes.contact} element={<ContactPage />} />
         </Route>
-
+        PayPage
         {/* Rutas sin NavBar */}
         <Route element={<LayoutNav />}>
           <Route path={routes.error404} element={<E404 />} />
+                    <Route path={routes.productPay} element={<PayPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
