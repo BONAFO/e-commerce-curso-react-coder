@@ -41,8 +41,11 @@ export const useProducts = ({ isDepend = false }) => {
   };
 };
 
-export const useProductsByName = ({ isDepend = false, name }) => {
+export const useInputSeach = ({ isDepend = false, name = "" }) => {
   const [products, setProducts] = useState(null);
+  const [input, setInput] = useState("");
+  const [wait, setWait] = useState(null);
+  const [searching, setSearching] = useState(false);
 
   const handleError = (response) => {
     throw Error(response);
@@ -64,8 +67,14 @@ export const useProductsByName = ({ isDepend = false, name }) => {
   ]);
 
   return {
-    setProducts,
     products,
+    setProducts,
+    input,
+    setInput,
+    wait,
+    setWait,
+    searching,
+    setSearching,
   };
 };
 

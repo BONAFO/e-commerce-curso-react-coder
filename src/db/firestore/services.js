@@ -3,8 +3,10 @@ import {
   getDoc,
   getDocs,
   doc,
+  or,
   query,
   where,
+  and,
 } from "firebase/firestore";
 import { db } from "./conection";
 
@@ -37,18 +39,19 @@ const getProducts = async () => {
  */
 const getProductsByName = async (name) => {
   try {
-    const q = query(
-      collection(db, "products"),
-      where("nombre", "==", name) // campo "nombre" debe existir en tus docs
-    );
+    
+    name = name.trim();
+    if (name.length != 0) {
+      const { data } = await getProducts();
 
-    const querySnapshot = await getDocs(q);
-    const products = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return { data: products };
+      return {
+        data: data.filter(
+          (prod) =>
+            prod.name.toLowerCase() === name.toLowerCase() ||
+            prod.name.toLowerCase().includes(name.toLowerCase())
+        ),
+      };
+    }
   } catch (error) {
     console.error("Error obteniendo productos por nombre:", error);
     throw error;
@@ -105,49 +108,6 @@ const getProductsByCatID = async (categorieID) => {
   }
 };
 
-// /**
-//  * Obtiene productos filtrados por nombre de categoría.
-//  *
-//  * @param {string} categorieName - Nombre de la categoría.
-//  * @returns {Promise<Array<{id: string, [key: string]: any}>>}
-//  * Array de productos que pertenecen a esa categoría.
-//  */
-// const getProductsByCatName = async (categorieName) => {
-//   try {
-//     // 1. Buscar la categoría por nombre
-//     const catQuery = query(
-//       collection(db, "categories"),
-//       where("name", "==", categorieName)
-//     );
-//     const catSnapshot = await getDocs(catQuery);
-
-//     if (catSnapshot.empty) {
-//       return { data: [] }; // no existe esa categoría
-//     }
-
-//     // Tomamos el primer resultado (suponiendo nombres únicos)
-//     const categoryDoc = catSnapshot.docs[0];
-//     const categoryID = categoryDoc.id;
-
-//     // 2. Buscar productos con ese categorieID
-//     const prodQuery = query(
-//       collection(db, "products"),
-//       where("categorie", "==", categoryID)
-//     );
-//     const prodSnapshot = await getDocs(prodQuery);
-
-//     const products = prodSnapshot.docs.map((doc) => ({
-//       id: doc.id,
-//       ...doc.data(),
-//     }));
-
-//     return { data: products };
-//   } catch (error) {
-//     console.error("Error obteniendo productos por nombre de categoría:", error);
-//     throw error;
-//   }
-// };
-
 /**
  * Obtiene productos filtrados por nombre de categoría en normalized_es o normalized_en.
  *
@@ -182,7 +142,7 @@ const getProductsByCatName = async (categorieName) => {
 
       snapshot = catSnapshotEn;
     }
-    
+
     return await getProductsByCatID(snapshot.docs[0].id);
 
     // // 1. Buscar la categoría por normalized_es

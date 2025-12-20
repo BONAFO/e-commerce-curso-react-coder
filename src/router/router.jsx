@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route, NavLink, Outlet } from "react-router";
 import MainPage from "../pages/MainPage";
 import ProductPage from "../pages/ProductPage";
-
-import NavBar from "../components/NavBar";
 import E404 from "../pages/Errors/404.jsx";
 import PayPage from "../pages/PayPage.jsx";
 import ContactPage from "../pages/ContactPage.jsx";
+import NavBarContainer from "../containers/NavBarContainer.jsx";
 
 export const routes = {
   mainPage: "/",
@@ -20,7 +19,7 @@ export const routes = {
 function LayoutNav({ navBar = false }) {
   return (
     <>
-      {navBar ? <NavBar /> : ""}
+      {navBar ? <NavBarContainer /> : ""}
       <Outlet />
     </>
   );

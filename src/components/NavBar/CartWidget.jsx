@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   IconButton,
   Menu,
@@ -10,10 +11,11 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useCart } from "../context/CartContext";
 import { NavLink } from "react-router";
-import { routes } from "../router/router";
+
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useCart } from "../../context/CartContext";
+import { routes } from "../../router/router";
 
 export default function CartWidget() {
   const [anchorEl, setAnchorEl] = useState(null);
