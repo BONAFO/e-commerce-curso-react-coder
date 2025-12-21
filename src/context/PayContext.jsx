@@ -5,6 +5,7 @@ export const usePay = () => useContext(PayContext);
 
 export default function PayProvider({ children }) {
   const [payProcessor, setPayProcessor] = useState("");
+  const [payMethod, setPayMethod] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [CVV, setCVV] = useState("");
   const [DNI, setDNI] = useState("");
@@ -14,7 +15,6 @@ export default function PayProvider({ children }) {
   const [address, setAddress] = useState("");
 
   const clearPay = () => {
-    PayProvider("");
     setPayProcessor("");
     setCardNumber("");
     setCVV("");
@@ -38,6 +38,8 @@ export default function PayProvider({ children }) {
             phone,
             email,
             address,
+            payMethod,
+            
           },
           setPayInfo: {
             setPayProcessor,
@@ -48,6 +50,8 @@ export default function PayProvider({ children }) {
             setPhone,
             setEmail,
             setAddress,
+            setPayMethod,
+          
           },
           clearPay,
         }}

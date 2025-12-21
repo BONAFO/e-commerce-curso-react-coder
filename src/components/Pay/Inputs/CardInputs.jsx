@@ -1,30 +1,15 @@
 import { Box, TextField, Stack } from "@mui/material";
-import { usePay } from "../../../context/PayContext";
 import handleNumeric from "../../../functions/handleNumeric";
+import {
+  useCardInputHook,
+  usePayInfo,
+  useSetPayInfo,
+} from "../../../hooks/Pay";
 
 export default function CardInputs() {
-  const { payInfo, setPayInfo } = usePay();
-
-  const handleCardChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    value = value.replace(/(.{4})/g, "$1 ").trim();
-    setPayInfo.setCardNumber(value);
-
-    const raw = value.replace(/\s/g, "");
-    if (/^4/.test(raw)) setPayInfo.setPayProcessor("visa");
-    else if (/^5[1-5]/.test(raw)) setPayInfo.setPayProcessor("mastercard");
-    else if (/^3[47]/.test(raw)) setPayInfo.setPayProcessor("amex");
-    else setPayInfo.setPayProcessor("");
-  };
-
-  const logos = {
-    visa: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Old_Visa_Logo.svg/1200px-Old_Visa_Logo.svg.png",
-    mastercard:
-      "https://cdn.iconscout.com/icon/free/png-256/free-mastercard-logo-icon-svg-download-png-2944982.png",
-    amex: "https://uridan.shop/wp-content/plugins/woo-stripe-payment/assets/img/cards/amex.svg",
-  };
-
-  const cvvLength = payInfo.payProcessor === "amex" ? 4 : 3;
+  const { payProcessor, cardNumber, CVV } = usePayInfo();
+  const { setCVV } = useSetPayInfo();
+  const { cvvLength, handleCardChange, logos } = useCardInputHook();
 
   return (
     <>
@@ -38,11 +23,11 @@ export default function CardInputs() {
             justifyContent: "center",
           }}
         >
-          {payInfo.payProcessor && (
+          {payProcessor && (
             <Box
               component="img"
-              src={logos[payInfo.payProcessor]}
-              alt={payInfo.payProcessor}
+              src={logos[payProcessor]}
+              alt={payProcessor}
               sx={{ maxHeight: "100%", maxWidth: "100%" }}
             />
           )}
@@ -51,7 +36,7 @@ export default function CardInputs() {
         <TextField
           required
           label="Número de tarjeta"
-          value={payInfo.cardNumber}
+          value={cardNumber}
           onChange={handleCardChange}
           placeholder="0000 0000 0000 0000"
           variant="outlined"
@@ -72,10 +57,10 @@ export default function CardInputs() {
 
         <TextField
           required
-          value={payInfo.CVV}
+          value={CVV}
           label="CVV"
           onChange={(e) => {
-            setPayInfo.setCVV(handleNumeric(e.target.value, 4));
+            setCVV(handleNumeric(e.target.value, 4));
           }}
           variant="outlined"
           sx={{
