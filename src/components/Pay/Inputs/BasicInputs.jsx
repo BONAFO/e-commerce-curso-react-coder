@@ -2,10 +2,12 @@ import { TextField } from "@mui/material";
 import { usePay } from "../../../context/PayContext";
 import handleNumeric from "../../../functions/handleNumeric";
 import handleOnlyText from "../../../functions/handleOnlyText";
+import { usePayInfo, useSetPayInfo } from "../../../hooks/Pay";
 
 export default function BasicInputs() {
-  const { payInfo, setPayInfo } = usePay();
-
+  const { DNI, fullName, phone, email, address } = usePayInfo();
+  const { setDNI, setFullName, setPhone, setEmail, setAddress } =
+    useSetPayInfo();
   return (
     <>
       <TextField
@@ -14,9 +16,9 @@ export default function BasicInputs() {
         name="dni"
         type="number"
         variant="outlined"
-        value={payInfo.DNI}
+        value={DNI}
         onInput={(e) => {
-          setPayInfo.setDNI(handleNumeric(e.target.value, 8));
+          setDNI(handleNumeric(e.target.value, 8));
         }}
         InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
         InputProps={{ style: { color: "#e9e9e9a7" } }}
@@ -33,9 +35,9 @@ export default function BasicInputs() {
         variant="outlined"
         InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
         InputProps={{ style: { color: "#e9e9e9a7" } }}
-        value={payInfo.fullName}
+        value={fullName}
         onInput={(e) => {
-          setPayInfo.setFullName(handleOnlyText(e.target.value, 100));
+          setFullName(handleOnlyText(e.target.value, 100));
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
@@ -49,9 +51,9 @@ export default function BasicInputs() {
         label="Teléfono"
         variant="outlined"
         type="number"
-        value={payInfo.phone}
+        value={phone}
         onInput={(e) => {
-          setPayInfo.setPhone(handleNumeric(e.target.value, 32));
+          setPhone(handleNumeric(e.target.value, 32));
         }}
         InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
         InputProps={{ style: { color: "#e9e9e9a7" } }}
@@ -67,11 +69,11 @@ export default function BasicInputs() {
         label="Correo electrónico"
         type="email"
         variant="outlined"
-        value={payInfo.email}
+        value={email}
         onInput={(e) => {
           const LIMIT = 100;
 
-          setPayInfo.setEmail(
+          setEmail(
             e.target.value.slice(
               0,
               e.target.value.length > LIMIT ? LIMIT : e.target.value.length
@@ -90,11 +92,11 @@ export default function BasicInputs() {
       <TextField
         label="Domicilio de facturación"
         variant="outlined"
-        value={payInfo.address}
+        value={address}
         onInput={(e) => {
           const LIMIT = 255;
 
-          setPayInfo.setAddress(
+          setAddress(
             e.target.value.slice(
               0,
               e.target.value.length > LIMIT ? LIMIT : e.target.value.length

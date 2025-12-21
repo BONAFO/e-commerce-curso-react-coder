@@ -1,22 +1,21 @@
-import { useRef, useState } from "react";
-import { Box, Typography, Button, ButtonGroup, Stack } from "@mui/material";
+import { Box, Typography, Button, Stack } from "@mui/material";
 import CardForm from "./CardForm";
 import DirectPay from "./DirectPay";
 import TransferForm from "./TransferForm";
-import PayProvider from "../../context/PayContext";
 import PayButtons from "./PayButtons";
+import { usePayInfo, usePaySubmit, useSetPayInfo } from "../../hooks/Pay";
+import { useState } from "react";
 
 export default function PaySelection() {
-  const [paymentMethod, setPaymentMethod] = useState(null);
-  const payform = useRef(null);
-
-  const handleSubmit = () => {
-    payform.current.preventDefault();
-  };
+  const handleSubmit = usePaySubmit();
+  const { payForm, setPayForm } = useState(null);
+  const { payMethod } = usePayInfo();
+  const { setPayMethod } = useSetPayInfo();
 
 
+const payMethods ={
   
-  
+};
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
       <Typography color="#ffffff" sx={{ textAlign: "center" }} variant="h5">
@@ -24,41 +23,39 @@ export default function PaySelection() {
       </Typography>
       <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
         <Button
-          onClick={() => setPaymentMethod(<CardForm cardType={"debito"} />)}
+
+          onClick={() => setPayForm(<CardForm cardType={"debito"} />)}
           color="secondary"
-          variant={paymentMethod === "debito" ? "contained" : "outlined"}
+          variant={payMethod === "debito" ? "contained" : "outlined"}
         >
           Tarjeta de Débito
         </Button>
         <Button
           color="secondary"
-          onClick={() => setPaymentMethod(<CardForm cardType={"credito"} />)}
-          variant={paymentMethod === "credito" ? "contained" : "outlined"}
+          onClick={() => setPayForm(<CardForm cardType={"credito"} />)}
+          variant={payMethod === "credito" ? "contained" : "outlined"}
         >
           Tarjeta de Crédito
         </Button>
         <Button
           color="secondary"
-          onClick={() => setPaymentMethod(<DirectPay />)}
-          variant={paymentMethod === "contado" ? "contained" : "outlined"}
+          onClick={() => setPayForm(<DirectPay />)}
+          variant={payMethod === "contado" ? "contained" : "outlined"}
         >
           Efectivo
         </Button>
         <Button
           color="secondary"
-          onClick={() => setPaymentMethod(<TransferForm />)}
-          variant={paymentMethod === "transferencia" ? "contained" : "outlined"}
+          onClick={() => setPayForm(<TransferForm />)}
+          variant={payMethod === "transferencia" ? "contained" : "outlined"}
         >
           Transferencia Bancaria
         </Button>
       </Stack>
-
-      <PayProvider>
-        <form action="" ref={payform}>
-          {paymentMethod}
-          <PayButtons paymentMethod={paymentMethod}/>
-        </form>
-      </PayProvider>
+      <form onSubmit={handleSubmit}>
+        {payForm}
+        <PayButtons />
+      </form>
     </Box>
   );
 }
