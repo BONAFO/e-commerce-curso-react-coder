@@ -8,6 +8,7 @@ import {
   Divider,
   IconButton,
   useMediaQuery,
+  capitalize,
 } from "@mui/material";
 
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
@@ -16,7 +17,6 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import { NavLink, useParams } from "react-router";
 
 
-import Capitalizate from "../../functions/capitalizate";
 import { routes } from "../../router/router";
 
 
@@ -79,7 +79,7 @@ export default function SidebarFilter({categories}) {
             sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
           >
             <ListItemText
-              primary={Capitalizate(cat[`name_${lang}`])}
+              primary={capitalize(cat[`name_${lang}`])}
               sx={{
                 display: collapsed ? "none" : "block",
                 color: (id == cat.id) || (id == undefined && cat.name_es == "todos") ? "#a5e7ffff" : "#ffffff",

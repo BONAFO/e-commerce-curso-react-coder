@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   IconButton,
   Menu,
@@ -12,27 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import { NavLink } from "react-router";
-
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useCart } from "../../context/CartContext";
 import { routes } from "../../router/router";
+import { useCartHook } from "../../hooks/Cart";
 
 export default function CartWidget() {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const {
+    anchorEl,
+    cart,
+    handleOpen,
+    handleClose,
+    eliminarUnidad,
+    eliminarStack,
+  } = useCartHook();
 
-  const { cart, setCart } = useCart();
-
-  const handleOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const eliminarProducto = (index) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
-  };
 
   return (
     <>
@@ -60,33 +51,53 @@ export default function CartWidget() {
       >
         {cart.length === 0 ? (
           <MenuItem disabled>
-            <ListItemText primary="El cart está vacío" />
+            <ListItemText primary="El carrito está vacío" />
           </MenuItem>
         ) : (
           <>
             {cart.map((item, index) => (
               <MenuItem key={index}>
-                <ListItem disableGutters sx={{ width: "100%" }}>
-                  <ListItemText
-                    primary={item.name}
-                    secondary={`$${item.price}`}
-                  />
+                <ListItem
+                  disableGutters
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography sx={{ flex: 1 }}>{item.name}</Typography>
+
+                  <Typography sx={{ mx: 2 }}>x{item.quantity}</Typography>
+
+                  <Typography>${item.tprice}</Typography>
+
                   <Button
                     color="error"
-                    sx={{ marginLeft: "20px" }}
+                    sx={{ ml: 2 }}
                     size="small"
-                    onClick={() => eliminarProducto(index)}
+                    onClick={() => eliminarUnidad(index)}
+                  >
+                    -1
+                  </Button>
+
+                  <Button
+                    color="error"
+                    sx={{ ml: 1 }}
+                    size="small"
+                    onClick={() => eliminarStack(index)}
                   >
                     Eliminar
                   </Button>
                 </ListItem>
               </MenuItem>
             ))}
+
             <MenuItem disabled>
               <ListItem disableGutters sx={{ width: "100%" }}>
                 <Box sx={{ flexGrow: 1, textAlign: "right" }}>
                   <Typography color="text.secondary">
-                    Total: ${cart.reduce((acc, item) => acc + item.price, 0)}
+                    Total: ${cart.reduce((acc, item) => acc + item.tprice, 0)}
                   </Typography>
                 </Box>
               </ListItem>

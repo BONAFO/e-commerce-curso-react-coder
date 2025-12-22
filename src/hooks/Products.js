@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import service, { MODE } from "../db/services";
 import { useMsjs } from "../context/LoadingMsjContext";
+import { useCart } from "../context/CartContext";
 
 const {
   getProducts,
@@ -222,4 +223,38 @@ export const useRouterCategories = ({ isDepend = false, id }) => {
     spinner,
     setSpinner,
   };
+};
+
+export const useProductCardHook = (game) => {
+  const { cart, setCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
+
+  const inCart = cart.find((g) => g.id === game.id);
+
+  const handleAddToCart = () => {
+    const entry = { ...game, quantity, tprice: game.price * quantity };
+    setCart([...cart, entry]);
+  };
+
+  return {
+    cart,
+    setCart,
+    quantity,
+    setQuantity,
+    inCart,
+    handleAddToCart,
+  };
+};
+
+export const useProductDetailHook = () => {
+  const { cart, setCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
+
+  const inCart = cart.find((g) => g.id === product.id);
+
+  const handleAddToCart = () => {
+    const entry = { ...product, quantity, tprice: product.price * quantity };
+    setCart([...cart, entry]);
+  };
+  return { cart, setCart, quantity, setQuantity, inCart, handleAddToCart };
 };

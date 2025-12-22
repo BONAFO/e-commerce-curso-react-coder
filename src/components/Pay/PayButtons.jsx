@@ -1,7 +1,6 @@
 import { Box, Button, Stack } from "@mui/material";
 import { routes } from "../../router/router";
 import { NavLink } from "react-router";
-import { usePay } from "../../context/PayContext";
 import { usePayInfo } from "../../hooks/Pay";
 
 export default function PayButtons() {
