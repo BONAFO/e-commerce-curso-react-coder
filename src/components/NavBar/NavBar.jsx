@@ -1,19 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import HomeIcon from "@mui/icons-material/Home";
-import EmailIcon from "@mui/icons-material/Email";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 
 import { NavLink } from "react-router";
 
 import { InputSeach } from "./InputSearch";
 import CartWidget from "./CartWidget";
 import Logo from "./Logo";
-import { routes } from "../../router/router";
+import { useNavBarHook } from "../../hooks/NavBar";
 
 function NavButton({ page, path }) {
   return (
@@ -28,48 +24,8 @@ function NavButton({ page, path }) {
   );
 }
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#1976d2",
-    },
-  },
-});
-
 export default function NavBar() {
-  const pages = [
-    {
-      txt: "inicio",
-      icon: <HomeIcon />,
-      path: routes.mainPage,
-    },
-    {
-      txt: "contacto",
-      icon: <EmailIcon />,
-      path: routes.contact,
-    },
-  ];
-
-  const searchRef = useRef(null);
-  const [showStickySearch, setShowStickySearch] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setShowStickySearch(!entry.isIntersecting);
-      },
-      { threshold: 0.01 }
-    );
-
-    if (searchRef.current) {
-      observer.observe(searchRef.current);
-    }
-
-    return () => {
-      if (searchRef.current) observer.unobserve(searchRef.current);
-    };
-  }, []);
+  const { pages, searchRef, showStickySearch , darkTheme} = useNavBarHook();
 
   return (
     <ThemeProvider theme={darkTheme}>

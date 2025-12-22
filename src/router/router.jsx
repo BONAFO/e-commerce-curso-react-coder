@@ -6,6 +6,8 @@ import BillPage from "../pages/BillPage.jsx";
 import ContactPage from "../pages/ContactPage.jsx";
 import NavBarContainer from "../containers/NavBarContainer.jsx";
 import PayPage from "../pages/PayPage.jsx";
+import IdOrderPage from "../pages/IdOrderPage.jsx";
+import ShowOrderPage from "../pages/ShowOrderPage.jsx";
 
 export const routes = {
   mainPage: "/",
@@ -15,6 +17,9 @@ export const routes = {
   productBill: "/products/bill",
   productPay: "/products/pay",
   contact: "/contact",
+  newOrder: "/order/new/:orderID",
+  showOrder: "/order/:orderID",
+  searchOrder: "/order/",
   error404: "*",
 };
 
@@ -44,7 +49,10 @@ export default function Router() {
         {/* Rutas sin NavBar */}
         <Route element={<LayoutNav />}>
           <Route path={routes.error404} element={<E404 />} />
-                    <Route path={routes.productPay} element={<PayPage />} />
+          <Route path={routes.productPay} element={<PayPage />} />
+          <Route path={routes.newOrder} element={<IdOrderPage />} />
+          <Route path={routes.showOrder} element={<ShowOrderPage />} />
+          <Route path={routes.searchOrder} element={<ShowOrderPage/>} />
 
         </Route>
       </Routes>

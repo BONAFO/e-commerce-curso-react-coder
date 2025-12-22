@@ -14,54 +14,7 @@ export default function DirectPay() {
       </Typography>
 
       <Stack spacing={2}>
-        {/* <TextField
-          required
-          label="DNI (8 dígitos)"
-          inputProps={{ maxLength: 8 }}
-          variant="outlined"
-          InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
-          InputProps={{ style: { color: "#e9e9e9a7" } }}
-          sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "blue" } } }}
-        />
-
-        <TextField
-          required
-          label="Nombre completo"
-          variant="outlined"
-          InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
-          InputProps={{ style: { color: "#e9e9e9a7" } }}
-          sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "blue" } } }}
-        />
-
-        <TextField
-          required
-          label="Teléfono"
-          variant="outlined"
-          InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
-          InputProps={{ style: { color: "#e9e9e9a7" } }}
-          sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "blue" } } }}
-        />
-
-        <TextField
-          required
-          label="Correo electrónico"
-          type="email"
-          variant="outlined"
-          InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
-          InputProps={{ style: { color: "#e9e9e9a7" } }}
-          sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "blue" } } }}
-        />
-
-        <TextField
-          label="Domicilio de facturación"
-          placeholder="Ej: Calle 123, Ciudad, Provincia"
-          variant="outlined"
-          InputLabelProps={{ style: { color: "#e9e9e9a7" } }}
-          InputProps={{ style: { color: "#e9e9e9a7" } }}
-          sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "blue" } } }}
-        /> */}
-
-        <BasicInputs/>
+        <BasicInputs />
       </Stack>
     </Box>
   );

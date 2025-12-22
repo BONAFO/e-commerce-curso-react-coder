@@ -7,16 +7,15 @@ import {
   Box,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useCart } from "../../context/CartContext";
+import { useScreen } from "../../context/ScreenContext";
 import { NavLink } from "react-router";
 import { routes } from "../../router/router";
+import ProductCounter from "../ProductCounter";
+import { useProductCardHook } from "../../hooks/Products";
 
 export default function ProductCard({ game }) {
-  const { cart, setCart } = useCart();
-
-  const handleAddToCart = () => {
-    setCart([...cart, game]);
-  };
+  const { isMobile } = useScreen();
+  const { quantity, setQuantity, inCart, handleAddToCart } = useProductCardHook(game);
 
   return (
     <Card
@@ -44,25 +43,32 @@ export default function ProductCard({ game }) {
         <Typography variant="label" color="#b7b7b7ff">
           ${game.price}
         </Typography>
+
+        {!inCart && (
+          <ProductCounter quantity={quantity} setQuantity={setQuantity} />
+        )}
       </CardContent>
 
       <Box
         sx={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-between",
           gap: 1,
           p: 2,
           pt: 0,
         }}
       >
-        {cart.filter((g) => g.id == game.id).length == 0 ? (
+        {!inCart ? (
           <Button
             variant="contained"
             fullWidth
             onClick={handleAddToCart}
             startIcon={<ShoppingCartIcon />}
             sx={{ flex: 1 }}
-          ></Button>
+          >
+            Agregar
+          </Button>
         ) : (
           <Button
             component={NavLink}
@@ -75,6 +81,7 @@ export default function ProductCard({ game }) {
             PAGAR
           </Button>
         )}
+
         <Button
           component={NavLink}
           to={routes.productDetail.replace(":productID", game.id)}

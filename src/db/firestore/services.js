@@ -7,6 +7,7 @@ import {
   query,
   where,
   and,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "./conection";
 
@@ -39,7 +40,6 @@ const getProducts = async () => {
  */
 const getProductsByName = async (name) => {
   try {
-    
     name = name.trim();
     if (name.length != 0) {
       const { data } = await getProducts();
@@ -217,6 +217,53 @@ const getCategories = async () => {
   }
 };
 
+/**
+ * Guarda una nueva entrada en la colección "entradas" de Firestore.
+ *
+ * @param {Object} data - Los datos de la entrada a guardar.
+ *
+ * @returns {Promise<string>}
+ * El ID del documento creado en Firestore.
+ */
+async function saveSell(data) {
+  try {
+    const docRef = await addDoc(collection(db, "orders"), data);
+    return { data: docRef.id };
+  } catch (error) {
+    console.error("Error guardando la factura:", error);
+    throw error;
+  }
+}
+
+/**
+ * Obtiene una orden desde la colección "orders" de Firestore por su ID.
+ *
+ * @param {string} orderID - El ID del documento de la orden a buscar.
+ *
+ * @returns {Promise<Object|null>}
+ * Un objeto con los datos de la orden y su ID si existe,
+ * o `null` si no se encuentra el documento.
+ *
+ * @throws {Error} Si ocurre un error al consultar Firestore.
+ */
+
+export async function getOrder(orderID) {
+  try {
+    const orderRef = doc(db, "orders", orderID);
+    const orderSnap = await getDoc(orderRef);
+
+    if (orderSnap.exists()) {
+      return { data: { id: orderSnap.id, ...orderSnap.data() } };
+    } else {
+      console.log("No existe la orden con ese ID");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error obteniendo la orden:", error);
+    throw error;
+  }
+}
+
 export default {
   getProducts,
   getProductsByName,
@@ -224,4 +271,6 @@ export default {
   getProductsByCatID,
   getProductsByCatName,
   getCategories,
+  saveSell,
+  getOrder,
 };
