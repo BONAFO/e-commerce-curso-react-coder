@@ -17,6 +17,7 @@ Configura las variables de entorno en un archivo .env
 
 Env:
     Firestore:
+    
                 VITE_FIREBASE_API_KEY
                 VITE_FIREBASE_AUTH_DOMAIN
                 VITE_FIREBASE_PROJECT_ID
@@ -45,6 +46,7 @@ El proyecto soporta dos modos de servicio:
     firestore — Conecta con Firebase Firestore para datos reales.
 
 El modo se define en src/db/services.js:
+
 
 export const MODE = "firestore"; // Cambiar a "mock" si se desea usar datos locales
 
