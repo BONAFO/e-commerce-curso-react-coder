@@ -87,7 +87,7 @@ export function ProductMobile({ product }) {
               <Button
                 aria-label="carrito"
                 component={NavLink}
-                to={routes.productBill}
+                to={routes.productPay}
                 sx={{
                   color: "white",
                   backgroundColor: "transparent",
@@ -178,7 +178,7 @@ export function ProductDesk({ product }) {
                 <Button
                   aria-label="carrito"
                   component={NavLink}
-                  to={routes.productBill}
+                  to={routes.productPay}
                   sx={{
                     color: "white",
                     backgroundColor: "transparent",

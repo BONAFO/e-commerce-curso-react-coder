@@ -110,7 +110,7 @@ export default function CartWidget() {
           sx={{ textAlign: "center", width: "100%" }}
           size="small"
           component={NavLink}
-          to={routes.productBill}
+          to={routes.productPay}
         >
           Pagar
         </Button>
