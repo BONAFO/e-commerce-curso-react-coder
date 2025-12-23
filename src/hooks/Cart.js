@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { useCart } from "../context/CartContext";
 
-export const useCartHook =()=>{
-      const [anchorEl, setAnchorEl] = useState(null);
+export const useCartHook = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const { cart, setCart } = useCart();
 
   const handleOpen = (event) => setAnchorEl(event.currentTarget);
@@ -32,15 +32,14 @@ export const useCartHook =()=>{
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
 
-
   return {
     anchorEl,
-setAnchorEl,
-cart,
-setCart,
-handleOpen,
-handleClose,
-eliminarUnidad,
-eliminarStack,
-  }
-}
+    setAnchorEl,
+    cart,
+    setCart,
+    handleOpen,
+    handleClose,
+    eliminarUnidad,
+    eliminarStack,
+  };
+};

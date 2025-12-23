@@ -8,6 +8,7 @@ import {
   where,
   and,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./conection";
 
@@ -144,53 +145,6 @@ const getProductsByCatName = async (categorieName) => {
     }
 
     return await getProductsByCatID(snapshot.docs[0].id);
-
-    // // 1. Buscar la categoría por normalized_es
-    // const catQueryEs = query(
-    //   collection(db, "categories"),
-    //   where("normalized_es", "==", categorieName)
-    // );
-
-    // console.log("catQueryEs",catQueryEs.docs);
-
-    // console.log(categorieName);
-
-    // const catSnapshotEs = await getDocs(catQueryEs);
-
-    // // 2. Buscar la categoría por normalized_en
-    // const catQueryEn = query(
-    //   collection(db, "categories"),
-    //   where("normalized_en", "==", "shooting")
-    // );
-
-    // console.log("catQueryEn",catQueryEn.docs);
-
-    // const catSnapshotEn = await getDocs(catQueryEn);
-
-    // // Combinar resultados
-    // const catDocs = [...catSnapshotEs.docs, ...catSnapshotEn.docs];
-
-    // if (catDocs.length === 0) {
-    //   return { data: [] }; // no existe esa categoría
-    // }
-
-    // // Tomamos el primer resultado (suponiendo nombres únicos)
-    // const categoryDoc = catDocs[0];
-    // const categoryID = categoryDoc.id;
-
-    // // 3. Buscar productos con ese categorieID
-    // const prodQuery = query(
-    //   collection(db, "products"),
-    //   where("categorie", "==", categoryID)
-    // );
-    // const prodSnapshot = await getDocs(prodQuery);
-
-    // const products = prodSnapshot.docs.map((doc) => ({
-    //   id: doc.id,
-    //   ...doc.data(),
-    // }));
-
-    // return { data: products };
   } catch (error) {
     console.error("Error obteniendo productos por nombre de categoría:", error);
     throw error;
@@ -218,16 +172,25 @@ const getCategories = async () => {
 };
 
 /**
- * Guarda una nueva entrada en la colección "entradas" de Firestore.
+ * Guarda una nueva entrada en la colección "entradas" de Firestore
+ * y actualiza el stock de los productos.
  *
  * @param {Object} data - Los datos de la entrada a guardar.
+ * @param {Array} newStock - Array con {id, stock} para actualizar.
  *
  * @returns {Promise<string>}
  * El ID del documento creado en Firestore.
  */
-async function saveSell(data) {
+async function saveSell(data, newStock) {
   try {
     const docRef = await addDoc(collection(db, "orders"), data);
+
+    for (let i = 0; i < newStock.length; i++) {
+      const item = newStock[i];
+      const productRef = doc(db, "products", item.id);
+      await updateDoc(productRef, { stock: item.stock });
+    }
+
     return { data: docRef.id };
   } catch (error) {
     console.error("Error guardando la factura:", error);

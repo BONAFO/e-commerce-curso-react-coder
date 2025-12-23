@@ -1,26 +1,13 @@
 import { useState } from "react";
-import { Box, Button, Typography, IconButton, TextField } from "@mui/material";
-import { useCart } from "../context/CartContext";
+import { Box, Button, Typography } from "@mui/material";
 import { NavLink } from "react-router";
 import { routes } from "../router/router";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import ProductCounter from "./ProductCounter";
 import { useProductDetailHook } from "../hooks/Products";
 
 export function ProductMobile({ product }) {
-  // const { cart, setCart } = useCart();
-  // const [quantity, setQuantity] = useState(1);
-
-  // const inCart = cart.find((g) => g.id === product.id);
-
-  // const handleAddToCart = () => {
-  //   const entry = { ...product, quantity, tprice: product.price * quantity };
-  //   setCart([...cart, entry]);
-  // };
-
   const { quantity, setQuantity, inCart, handleAddToCart } =
-    useProductDetailHook();
+    useProductDetailHook(product);
 
   return (
     <>
@@ -61,13 +48,25 @@ export function ProductMobile({ product }) {
             <Typography
               color="var(--bs-font-color)"
               variant="h4"
-              sx={{ mb: 2 }}
+              sx={{ mb: 1 }}
             >
               ${product.price}
             </Typography>
 
+            <Typography
+              color="var(--bs-font-color)"
+              variant="body2"
+              sx={{ mb: 2 }}
+            >
+              Stock: {product.stock}
+            </Typography>
+
             {!inCart && (
-              <ProductCounter quantity={quantity} setQuantity={setQuantity} />
+              <ProductCounter
+                quantity={quantity}
+                setQuantity={setQuantity}
+                stock={product.stock}
+              />
             )}
 
             <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
@@ -107,7 +106,7 @@ export function ProductMobile({ product }) {
 
 export function ProductDesk({ product }) {
   const { quantity, setQuantity, inCart, handleAddToCart } =
-    useProductDetailHook();
+    useProductDetailHook(product);
 
   return (
     <>
@@ -140,13 +139,25 @@ export function ProductDesk({ product }) {
               <Typography
                 color="var(--bs-font-color)"
                 variant="h4"
-                sx={{ mb: 2 }}
+                sx={{ mb: 1 }}
               >
                 ${product.price}
               </Typography>
 
+              <Typography
+                color="var(--bs-font-color)"
+                variant="body"
+                sx={{ mb: 2 }}
+              >
+                Stock: {product.stock}
+              </Typography>
+
               {!inCart && (
-                <ProductCounter quantity={quantity} setQuantity={setQuantity} />
+                <ProductCounter
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  stock={product.stock}
+                />
               )}
 
               <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
