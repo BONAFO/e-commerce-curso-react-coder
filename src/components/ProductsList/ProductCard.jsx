@@ -15,7 +15,10 @@ import { useProductCardHook } from "../../hooks/Products";
 
 export default function ProductCard({ game }) {
   const { isMobile } = useScreen();
-  const { quantity, setQuantity, inCart, handleAddToCart } = useProductCardHook(game);
+  const { quantity, setQuantity, inCart, handleAddToCart } =
+    useProductCardHook(game);
+
+  const hasStock = game.stock > 0;
 
   return (
     <Card
@@ -40,12 +43,25 @@ export default function ProductCard({ game }) {
         <Typography variant="h5" color="#b7b7b7ff">
           {game.name}
         </Typography>
-        <Typography variant="label" color="#b7b7b7ff">
+
+        <Typography variant="body1" color="#b7b7b7ff">
           ${game.price}
         </Typography>
 
-        {!inCart && (
-          <ProductCounter quantity={quantity} setQuantity={setQuantity} />
+        <Typography
+          variant="body2"
+          color={hasStock ? "#b7b7b7aa" : "#ff6b6b"}
+          sx={{ mb: 1 }}
+        >
+          Stock: {game.stock}
+        </Typography>
+
+        {hasStock && !inCart && (
+          <ProductCounter
+            quantity={quantity}
+            setQuantity={setQuantity}
+            stock={game.stock}
+          />
         )}
       </CardContent>
 
@@ -59,28 +75,30 @@ export default function ProductCard({ game }) {
           pt: 0,
         }}
       >
-        {!inCart ? (
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleAddToCart}
-            startIcon={<ShoppingCartIcon />}
-            sx={{ flex: 1 }}
-          >
-            Agregar
-          </Button>
-        ) : (
-          <Button
-            component={NavLink}
-            to={routes.productBill}
-            variant="contained"
-            color="info"
-            fullWidth
-            sx={{ flex: 1 }}
-          >
-            PAGAR
-          </Button>
-        )}
+        {hasStock ? (
+          !inCart ? (
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleAddToCart}
+              startIcon={<ShoppingCartIcon />}
+              sx={{ flex: 1 }}
+            >
+              Agregar
+            </Button>
+          ) : (
+            <Button
+              component={NavLink}
+              to={routes.productBill}
+              variant="contained"
+              color="info"
+              fullWidth
+              sx={{ flex: 1 }}
+            >
+              PAGAR
+            </Button>
+          )
+        ) : null}
 
         <Button
           component={NavLink}

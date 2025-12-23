@@ -132,8 +132,14 @@ export const usePaySubmit = () => {
           finalImport: cart.reduce((to, item) => to + item.tprice, 0),
           ...payFormSelection(payInfo),
         };
+        const newStock = [];
+
+        cart.map((pro) => {
+          newStock.push({ id: pro.id, stock: pro.stock - pro.quantity });
+        });
+
         setSpinner(true);
-        const response = await saveSell(sell);
+        const response = await saveSell(sell, newStock);
 
         window.location.href = routes.newOrder.replace(
           ":orderID",

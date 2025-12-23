@@ -225,6 +225,9 @@ export const useRouterCategories = ({ isDepend = false, id }) => {
   };
 };
 
+
+
+
 export const useProductCardHook = (game) => {
   const { cart, setCart } = useCart();
   const [quantity, setQuantity] = useState(1);
@@ -232,8 +235,21 @@ export const useProductCardHook = (game) => {
   const inCart = cart.find((g) => g.id === game.id);
 
   const handleAddToCart = () => {
-    const entry = { ...game, quantity, tprice: game.price * quantity };
-    setCart([...cart, entry]);
+    const currentQty = inCart ? inCart.quantity : 0;
+    const newQty = currentQty + quantity;
+
+    if (newQty > game.stock) {
+      alert("No puedes agregar más unidades que el stock disponible.");
+      return;
+    }
+
+    const entry = { ...game, quantity: newQty, tprice: game.price * newQty };
+
+    if (inCart) {
+      setCart(cart.map((g) => (g.id === game.id ? entry : g)));
+    } else {
+      setCart([...cart, entry]);
+    }
   };
 
   return {
@@ -246,15 +262,29 @@ export const useProductCardHook = (game) => {
   };
 };
 
-export const useProductDetailHook = () => {
+export const useProductDetailHook = (product) => {
   const { cart, setCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const inCart = cart.find((g) => g.id === product.id);
 
   const handleAddToCart = () => {
-    const entry = { ...product, quantity, tprice: product.price * quantity };
-    setCart([...cart, entry]);
+    const currentQty = inCart ? inCart.quantity : 0;
+    const newQty = currentQty + quantity;
+
+    if (newQty > product.stock) {
+      alert("No puedes agregar más unidades que el stock disponible.");
+      return;
+    }
+
+    const entry = { ...product, quantity: newQty, tprice: product.price * newQty };
+
+    if (inCart) {
+      setCart(cart.map((g) => (g.id === product.id ? entry : g)));
+    } else {
+      setCart([...cart, entry]);
+    }
   };
+
   return { cart, setCart, quantity, setQuantity, inCart, handleAddToCart };
 };
