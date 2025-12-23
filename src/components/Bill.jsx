@@ -104,46 +104,6 @@ export function BillCart() {
             </tr>
           </tbody>
         </table>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            justifyContent: isMobile ? "center" : "space-between",
-            alignItems: isMobile ? "stretch" : "center",
-            gap: 2,
-            mt: 3,
-          }}
-        >
-          <Button
-            sx={{ fontSize: "20px", color: "#ffc7a3ff" }}
-            variant="contained"
-            color="error"
-            onClick={handleCancelBIll}
-          >
-            Cancelar compra
-          </Button>
-
-          <Button
-            sx={{ fontSize: "20px", color: "#a6d4ffff" }}
-            variant="contained"
-            component={NavLink}
-            to={routes.mainPage}
-            color="primary"
-          >
-            Seguir comprando
-          </Button>
-
-          <Button
-            sx={{ fontSize: "20px", color: "#93ffccff" }}
-            variant="contained"
-            color="success"
-            onClick={handleSaveBill}
-          >
-            Confirmar
-          </Button>
-        </Box>
-
         <Box
           sx={{
             mt: 4,
@@ -189,6 +149,65 @@ export function BillCart() {
           <Typography variant="body1" color="#e9e9e9a7">
             Dirección: {address}
           </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              justifyContent: isMobile ? "center" : "space-between",
+              alignItems: isMobile ? "stretch" : "center",
+              gap: 2,
+              mt: 3,
+            }}
+          >
+            <Button
+              sx={{ fontSize: "20px", color: "#a6d4ffff" }}
+              variant="contained"
+              component={NavLink}
+              to={routes.productPay}
+              color="primary"
+            >
+              MODIFICAR
+            </Button>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            justifyContent: isMobile ? "center" : "space-between",
+            alignItems: isMobile ? "stretch" : "center",
+            gap: 2,
+            mt: 3,
+          }}
+        >
+          <Button
+            sx={{ fontSize: "20px", color: "#ffc7a3ff" }}
+            variant="contained"
+            color="error"
+            onClick={handleCancelBIll}
+          >
+            Cancelar compra
+          </Button>
+
+          <Button
+            sx={{ fontSize: "20px", color: "#a6d4ffff" }}
+            variant="contained"
+            component={NavLink}
+            to={routes.mainPage}
+            color="primary"
+          >
+            Seguir comprando
+          </Button>
+
+          <Button
+            sx={{ fontSize: "20px", color: "#93ffccff" }}
+            variant="contained"
+            color="success"
+            onClick={handleSaveBill}
+          >
+            Confirmar
+          </Button>
         </Box>
       </Box>
     </>
