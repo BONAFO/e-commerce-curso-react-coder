@@ -89,7 +89,7 @@ export default function ProductCard({ game }) {
           ) : (
             <Button
               component={NavLink}
-              to={routes.productBill}
+              to={routes.productPay}
               variant="contained"
               color="info"
               fullWidth

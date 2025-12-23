@@ -6,12 +6,12 @@ import PaySelectionButton from "./PaySelectionButton";
 import Spinner from "../../Spinner";
 
 export default function PaySelection() {
-  const { handleSubmit, spinner } = usePaySubmit();
+  const { handleSubmit } = usePaySubmit();
   const [payForm, setPayForm] = useState(null);
 
   return (
     <>
-      <Spinner loading={spinner} />
+
       <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
         <Typography color="#ffffff" sx={{ textAlign: "center" }} variant="h5">
           Registrar pedido

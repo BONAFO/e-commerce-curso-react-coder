@@ -1,4 +1,5 @@
-import { BillEmptyCart, BillCart } from "../components/Bill";
+import { BillCart } from "../components/Bill";
+import { BillEmptyCart } from "../components/BillEmptyCart";
 import { useCart } from "../context/CartContext";
 
 export default function BillContainer() {

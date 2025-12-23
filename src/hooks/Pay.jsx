@@ -11,7 +11,7 @@ import {
 import service, { MODE } from "../db/services";
 import { routes } from "../router/router";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const { saveSell, getOrder, getProductsByID } = service[MODE];
 
@@ -116,45 +116,27 @@ export const useCardInputHook = () => {
 
 export const usePaySubmit = () => {
   const { payInfo } = usePay();
-  const { cart } = useCart();
-  const [spinner, setSpinner] = useState(false);
 
+  const navigate = useNavigate();
   return {
     handleSubmit: async (e) => {
       e.preventDefault();
       const validator = payValidationsForm(payInfo);
       if (validator) {
-        const sell = {
-          products: cart.map((pro) => {
-            return { id: pro.id, quantity: pro.quantity };
-            console.log(1);
-          }),
-          finalImport: cart.reduce((to, item) => to + item.tprice, 0),
-          ...payFormSelection(payInfo),
-        };
-        const newStock = [];
-
-        cart.map((pro) => {
-          newStock.push({ id: pro.id, stock: pro.stock - pro.quantity });
-        });
-
-        setSpinner(true);
-        const response = await saveSell(sell, newStock);
-
-        window.location.href = routes.newOrder.replace(
-          ":orderID",
-          response.data
-        );
+        navigate(routes.productBill);
       } else {
         throw Error("Informacion en el form invalida");
       }
     },
-    spinner,
   };
 };
 
 export const useBillHook = () => {
   const { cart, setCart } = useCart();
+  const [spinner, setSpinner] = useState(false);
+  const { payMethod } = usePayInfo();
+
+  const { payInfo } = usePay();
 
   const handleRemoveOne = (productID) => {
     setCart((prev) => {
@@ -180,11 +162,42 @@ export const useBillHook = () => {
     setCart((prev) => prev.filter((item) => item.id !== productID));
   };
 
+  const handleSaveBill = async () => {
+    const sell = {
+      products: cart.map((pro) => {
+        return { id: pro.id, quantity: pro.quantity };
+      }),
+      finalImport: cart.reduce((to, item) => to + item.tprice, 0),
+      ...payFormSelection(payInfo),
+    };
+    const newStock = [];
+
+    cart.map((pro) => {
+      newStock.push({ id: pro.id, stock: pro.stock - pro.quantity });
+    });
+
+    setSpinner(true);
+    const response = await saveSell(sell, newStock);
+
+    window.location.href = routes.newOrder.replace(":orderID", response.data);
+  };
+
   const handleEmptyCart = () => {
     setCart([]);
   };
 
   const total = cart.reduce((to, item) => to + item.tprice, 0);
+
+  const method = payMethods.find((m) => m.id === payMethod);
+
+  const handleCancelBIll = () => {
+    const confirmCancel = window.confirm(
+      "¿Seguro que deseas cancelar la compra?"
+    );
+    if (confirmCancel) {
+      window.location.href = routes.mainPage;
+    }
+  };
 
   return {
     cart,
@@ -193,6 +206,11 @@ export const useBillHook = () => {
     handleRemoveStack,
     handleEmptyCart,
     total,
+    method,
+    handleCancelBIll,
+    spinner,
+    setSpinner,
+    handleSaveBill,
   };
 };
 

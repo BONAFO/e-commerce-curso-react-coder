@@ -42,17 +42,17 @@ export default function Router() {
           <Route path={routes.mainPageCategories} element={<MainPage />} />
           <Route path={routes.mainPageCategorie} element={<MainPage />} />
           <Route path={routes.productDetail} element={<ProductPage />} />
-          <Route path={routes.productBill} element={<BillPage />} />
           <Route path={routes.contact} element={<ContactPage />} />
         </Route>
         PayPage
         {/* Rutas sin NavBar */}
         <Route element={<LayoutNav />}>
           <Route path={routes.error404} element={<E404 />} />
-          <Route path={routes.productPay} element={<PayPage />} />
           <Route path={routes.newOrder} element={<IdOrderPage />} />
           <Route path={routes.showOrder} element={<ShowOrderPage />} />
           <Route path={routes.searchOrder} element={<ShowOrderPage/>} />
+          <Route path={routes.productPay} element={<PayPage />} />
+          <Route path={routes.productBill} element={<BillPage />} />
 
         </Route>
       </Routes>
