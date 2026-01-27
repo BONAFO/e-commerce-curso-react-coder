@@ -1,7 +1,7 @@
 import mock from "./mock/service";
 import firestore from "./firestore/services";
 
-export const MODE = "firestore";
+export const MODE = "mock";
 
 const service = {
   mock,
